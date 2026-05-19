@@ -9,19 +9,40 @@ import {
   Res,
   Req,
   UseGuards,
+  Injectable,
+  ExecutionContext,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from './email.service';
-// import { AuthGuard } from '@nestjs/passport';
 import type { Response, Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { PerformanceService } from './performance.service';
 
+@Injectable()
+class OptionalJwtGuard extends AuthGuard('jwt') {
+  canActivate(ctx: ExecutionContext) {
+    return super.canActivate(ctx);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleRequest(_err: any, user: any) {
+    return user ?? null;
+  }
+}
+
 @Controller('user')
 export class UserController {
+  private async getActiveUser(req: Request) {
+    const typed = req as Request & { user?: { userId: number } };
+    if (typed.user?.userId) {
+      const user = await this.userService.findById(typed.user.userId);
+      if (user) return user;
+    }
+    return this.userService.getOrCreateDemoUser();
+  }
+
   @Post('preferences')
   async savePreferences(
     @Body('firstName') firstName: string,
@@ -30,10 +51,7 @@ export class UserController {
     @Body('favouriteSubjects') favouriteSubjects: string[],
     @Body('hobbies') hobbies: string[],
   ) {
-    // For demo, get user by username from token or session (implement auth in production)
-    // Here, just update the first user for simplicity
-    const user = await this.userService.findByUsername('testuser');
-    if (!user) return { error: 'User not found' };
+    const user = await this.userService.getOrCreateDemoUser();
     user.firstName = firstName;
     user.lastName = lastName;
     user.age = age;
@@ -142,21 +160,17 @@ export class UserController {
     return { ok: true };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
-  me(@Req() req: Request) {
-    const typed = req as Request & {
-      user?: { userId: number; username: string };
-    };
-    return typed.user ?? null;
+  async me(@Req() req: Request) {
+    const user = await this.getActiveUser(req);
+    return { userId: user.id, username: user.username };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Get('profile')
-  @UseGuards(AuthGuard('jwt'))
   async getProfile(@Req() req: Request) {
-    const typed = req as Request & { user?: { userId: number } };
-    const user = await this.userService.findById(typed.user!.userId);
-    if (!user) throw new BadRequestException('User not found');
+    const user = await this.getActiveUser(req);
     const {
       id,
       username,
@@ -181,8 +195,8 @@ export class UserController {
     };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Post('profile')
-  @UseGuards(AuthGuard('jwt'))
   async updateProfile(
     @Req() req: Request,
     @Body()
@@ -194,9 +208,7 @@ export class UserController {
       hobbies: string[];
     }>,
   ) {
-    const typed = req as Request & { user?: { userId: number } };
-    const user = await this.userService.findById(typed.user!.userId);
-    if (!user) throw new BadRequestException('User not found');
+    const user = await this.getActiveUser(req);
     user.firstName = body.firstName ?? user.firstName;
     user.lastName = body.lastName ?? user.lastName;
     user.age = typeof body.age === 'number' ? body.age : user.age;
@@ -206,8 +218,8 @@ export class UserController {
     return { ok: true, id: saved.id };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Post('avatar')
-  @UseGuards(AuthGuard('jwt'))
   async uploadAvatar(
     @Req() req: Request,
     @Body('imageData') imageData: string,
@@ -215,9 +227,7 @@ export class UserController {
     if (!imageData || !imageData.startsWith('data:image/')) {
       throw new BadRequestException('Invalid image data');
     }
-    const typed = req as Request & { user?: { userId: number } };
-    const user = await this.userService.findById(typed.user!.userId);
-    if (!user) throw new BadRequestException('User not found');
+    const user = await this.getActiveUser(req);
     const [meta, data] = imageData.split(',');
     const ext = meta.includes('image/png')
       ? 'png'
@@ -235,13 +245,11 @@ export class UserController {
     return { ok: true, avatarUrl: user.avatarUrl };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Get('performance')
-  @UseGuards(AuthGuard('jwt'))
   async getPerformance(@Req() req: Request) {
-    const typed = req as Request & { user?: { userId: number } };
-    const entries = await this.performanceService.listForUser(
-      typed.user!.userId,
-    );
+    const user = await this.getActiveUser(req);
+    const entries = await this.performanceService.listForUser(user.id);
     const totals = this.performanceService.computeTotals(entries);
     return {
       history: entries.map((e, idx) => ({
@@ -253,8 +261,8 @@ export class UserController {
     };
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Post('performance')
-  @UseGuards(AuthGuard('jwt'))
   async addPerformance(
     @Req() req: Request,
     @Body('label') label: string,
@@ -263,9 +271,9 @@ export class UserController {
     if (typeof accuracy !== 'number' || !isFinite(accuracy)) {
       throw new BadRequestException('accuracy must be a number');
     }
-    const typed = req as Request & { user?: { userId: number } };
+    const user = await this.getActiveUser(req);
     const entry = await this.performanceService.addEntry(
-      typed.user!.userId,
+      user.id,
       label || 'Session',
       Math.max(0, Math.min(100, accuracy)),
     );
@@ -274,16 +282,11 @@ export class UserController {
 
   // Optional helper to seed some demo data quickly
   @Post('performance/seed')
-  @UseGuards(AuthGuard('jwt'))
   async seedPerformance(@Req() req: Request) {
-    const typed = req as Request & { user?: { userId: number } };
+    const user = await this.getActiveUser(req);
     const seq = [72, 78, 81, 79, 85, 90, 86];
     for (let i = 0; i < seq.length; i++) {
-      await this.performanceService.addEntry(
-        typed.user!.userId,
-        `S${i + 1}`,
-        seq[i],
-      );
+      await this.performanceService.addEntry(user.id, `S${i + 1}`, seq[i]);
     }
     return { ok: true };
   }

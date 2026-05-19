@@ -3,6 +3,7 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
 
@@ -73,22 +74,19 @@ export default function MathLearningPath() {
           zIndex: 1,
           background: 'radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)',
         }} />
-      {/* Navbar */}
-  <nav className="w-full flex items-center justify-between px-6 py-2 rounded-b-[2.5rem] bg-white/60 shadow-xl border-b-4 border-blue-200 z-30 sticky top-0 backdrop-blur-md" style={{background: 'linear-gradient(90deg, rgba(236,72,153,0.18) 0%, rgba(59,130,246,0.18) 100%)'}}>
-        <div className="flex items-center gap-3">
-          <span className="text-3xl select-none">🦉</span>
-          <span className="text-2xl font-extrabold tracking-tight text-blue-600 drop-shadow font-[Comic Sans MS,Comic Sans,cursive]">
-            Math Quest
-          </span>
-        </div>
-        <Link
-          href="/"
-          className="ml-4 bg-pink-500 hover:bg-pink-600 text-white px-7 py-2 rounded-full text-base font-bold shadow transition text-center font-[Comic Sans MS,Comic Sans,cursive] border-2 border-pink-300"
-          onClick={playClick}
-        >
-          Home
-        </Link>
-      </nav>
+        <nav className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none" style={{ background: 'transparent' }}>
+          <div className="flex items-center gap-3">
+            <span className="text-2xl select-none">🦉</span>
+            <span className="text-base font-semibold tracking-wide text-white">Math Quest</span>
+          </div>
+          <Link href="/">
+            <Button size="sm" className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none">
+              <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+              <span className="relative">Home</span>
+            </Button>
+          </Link>
+        </nav>
       <main className="flex-1 flex flex-col items-center justify-center px-4 z-10 relative">
         <h1
           className="text-5xl md:text-6xl font-extrabold mt-12 mb-10 text-center"

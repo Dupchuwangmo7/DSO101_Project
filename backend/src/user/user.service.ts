@@ -76,6 +76,31 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  async getOrCreateDemoUser(): Promise<User> {
+    const existing = await this.findByUsername('testuser');
+    if (existing) {
+      return existing;
+    }
+
+    const demo = this.userRepository.create({
+      username: 'testuser',
+      email: 'testuser@local.dev',
+      password: null,
+      emailVerified: true,
+      verificationToken: null,
+      age: null,
+      firstName: null,
+      lastName: null,
+      favouriteSubjects: null,
+      hobbies: null,
+      avatarUrl: null,
+      googleId: null,
+      profile: null,
+    });
+
+    return this.userRepository.save(demo);
+  }
+
   /*
   async registerGoogleUser(googleUser: any): Promise<User> {
     const user = this.userRepository.create({

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Link from "next/link";
 import { AI_MATH_SYSTEM_PROMPT } from "@/lib/prompt";
 
 // Phaser Game React Component using TypeScript
@@ -8,7 +9,6 @@ import dynamic from "next/dynamic";
 const PhaserBubbleGame = dynamic(() => import("./PhaserBubbleGame"), {
   ssr: false,
 });
-import Link from "next/link";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -1442,33 +1442,27 @@ function AiMathPage() {
           const idx = line.indexOf("data:");
           if (idx === -1) continue;
           const jsonStr = line.slice(idx + 5).trim();
+          let obj: { delta?: string; done?: boolean; error?: string } | undefined;
           try {
-            const obj = JSON.parse(jsonStr) as {
-              delta?: string;
-              done?: boolean;
-              error?: string;
-            };
-            if (obj.error) {
-              throw new Error(obj.error);
-            }
-            if (typeof obj.delta === "string") {
-              setChat((prev) => {
-                if (!prev.length) return prev;
-                const next = [...prev];
-                const last = next[next.length - 1];
-                next[next.length - 1] = {
-                  ...last,
-                  a: (last.a || "") + obj.delta,
-                };
-                return next;
-              });
-            }
-            if (obj.done) {
-              return;
-            }
+            obj = JSON.parse(jsonStr);
           } catch {
-            // Partial frame; ignore
+            continue; // Partial frame; ignore
           }
+          if (!obj) continue;
+          if (obj.error) throw new Error(obj.error);
+          if (typeof obj.delta === "string") {
+            setChat((prev) => {
+              if (!prev.length) return prev;
+              const next = [...prev];
+              const last = next[next.length - 1];
+              next[next.length - 1] = {
+                ...last,
+                a: (last.a || "") + obj!.delta,
+              };
+              return next;
+            });
+          }
+          if (obj.done) return;
         }
       }
     } catch (err: unknown) {
@@ -1819,30 +1813,25 @@ function AiMathPage() {
         overflow: "hidden",
       }}
     >
-      {/* ...existing code... */}
       {/* Navbar */}
       <nav
-  className="w-full flex items-center justify-between px-6 py-2 rounded-b-[2.5rem] bg-white/50 shadow-2xl border-b-4 border-blue-200 z-20 relative backdrop-blur-md"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(236,72,153,0.18) 0%, rgba(59,130,246,0.18) 100%)",
-        }}
+        className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none"
+        style={{ background: "transparent" }}
       >
         <div className="flex items-center gap-3">
-          <span className="text-3xl select-none">🤖</span>
-          <span
-            className="text-2xl font-extrabold tracking-tight text-blue-100 drop-shadow font-[Comic Sans MS,Comic Sans,cursive]"
-            style={{ textShadow: "0 0 10px #93c5fd, 0 0 2px #fff" }}
-          >
+          <span className="text-2xl select-none">🤖</span>
+          <span className="text-base font-semibold tracking-wide text-white">
             AI Math
           </span>
         </div>
         <Link href="/">
           <Button
             size="sm"
-            className="ml-4 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-[Comic Sans MS,Comic Sans,cursive] border-2 border-pink-300 shadow-lg"
+            className="relative ml-4 rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none"
           >
-            Home
+            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+            <span className="relative">Home</span>
           </Button>
         </Link>
       </nav>

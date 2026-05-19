@@ -88,19 +88,17 @@ function MathPageInner() {
 		  zIndex: 1,
 		  background: 'radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)',
 		}} />
-	  <nav className="w-full flex items-center justify-between px-6 py-4 min-h-[64px] rounded-b-[2.5rem] bg-white/60 shadow-xl border-b-4 border-blue-200 z-20 relative backdrop-blur-md" style={{background: 'linear-gradient(90deg, rgba(236,72,153,0.18) 0%, rgba(59,130,246,0.18) 100%)', marginBottom: 0, paddingBottom: 0, marginTop: 0, paddingTop: 0}}>
+		<nav className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none" style={{ background: 'transparent' }}>
 		  <div className="flex items-center gap-3">
-			<span className="text-3xl select-none">🦉</span>
-			<span className="text-2xl font-extrabold tracking-tight text-blue-600 drop-shadow font-[Comic Sans MS,Comic Sans,cursive]">
-			  Space Math Quiz
-			</span>
+			<span className="text-2xl select-none">🦉</span>
+			<span className="text-base font-semibold tracking-wide text-white">Space Math Quiz</span>
 		  </div>
-		  <Link
-			href="/"
-			className="ml-4 bg-pink-500 hover:bg-pink-600 text-white px-7 py-2 rounded-full text-base font-bold shadow transition text-center font-[Comic Sans MS,Comic Sans,cursive] border-2 border-pink-300"
-			onClick={() => { if (audioRef.current) { audioRef.current.currentTime = 0; audioRef.current.play(); } }}
-		  >
-			Home
+		  <Link href="/">
+			<Button size="sm" className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none">
+			  <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+			  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+			  <span className="relative">Home</span>
+			</Button>
 		  </Link>
 		</nav>
 	{/* Gap below navbar and above progress bar/level indicator */}
@@ -660,20 +658,18 @@ function MathPageInner() {
 				zIndex: 1,
 				background: 'radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)',
 			}} />
-	  {/* Navbar copied from learning-path for consistency */}
-	<nav className="w-full flex items-center justify-between px-6 py-4 min-h-[64px] rounded-b-[2.5rem] bg-white/60 shadow-xl border-b-4 border-blue-200 z-20 relative backdrop-blur-md" style={{background: 'linear-gradient(90deg, rgba(236,72,153,0.18) 0%, rgba(59,130,246,0.18) 100%)', marginBottom: 0, paddingBottom: 0, marginTop: 0, paddingTop: 0}}>
+	  {/* Navbar */}
+	<nav className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none" style={{ background: 'transparent' }}>
 		<div className="flex items-center gap-3">
-		  <span className="text-3xl select-none">🦉</span>
-		  <span className="text-2xl font-extrabold tracking-tight text-blue-600 drop-shadow font-[Comic Sans MS,Comic Sans,cursive]">
-			Math Quest
-		  </span>
+		  <span className="text-2xl select-none">🦉</span>
+		  <span className="text-base font-semibold tracking-wide text-white">Space Math Quiz</span>
 		</div>
-		<Link
-		  href="/"
-		  className="ml-4 bg-pink-500 hover:bg-pink-600 text-white px-7 py-2 rounded-full text-base font-bold shadow transition text-center font-[Comic Sans MS,Comic Sans,cursive] border-2 border-pink-300"
-		  onClick={() => { if (audioRef.current) { audioRef.current.currentTime = 0; audioRef.current.play(); } }}
-		>
-		  Home
+		<Link href="/">
+		  <Button size="sm" className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none">
+			<span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+			<span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+			<span className="relative">Home</span>
+		  </Button>
 		</Link>
 	  </nav>
 

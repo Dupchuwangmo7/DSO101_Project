@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,13 +52,6 @@ export default function ProfilePage() {
   const chartConfig = {
     accuracy: { label: "Accuracy", color: "#60a5fa" },
   } as const;
-  const clickAudioRef = useRef<HTMLAudioElement>(null);
-  const playClick = () => {
-    if (clickAudioRef.current) {
-      clickAudioRef.current.currentTime = 0;
-      void clickAudioRef.current.play();
-    }
-  };
 
   useEffect(() => {
     let alive = true;
@@ -163,12 +156,6 @@ export default function ProfilePage() {
 
   return (
     <>
-      <audio
-        ref={clickAudioRef}
-        src="/button-click.mp3"
-        preload="auto"
-        style={{ display: "none" }}
-      />
       <div
         className="font-quicksand min-h-screen flex flex-col transition-colors duration-500"
         style={{
@@ -189,46 +176,41 @@ export default function ProfilePage() {
           }}
         />
 
-        {/* Navbar (same visual style as homepage) */}
         <nav
-          className="w-full flex items-center justify-between px-6 py-2 rounded-b-[2.5rem] bg-white/60 shadow-xl border-b-4 border-blue-200 z-20 relative backdrop-blur-md"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(236,72,153,0.18) 0%, rgba(59,130,246,0.18) 100%)",
-          }}
+          className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none"
+          style={{ background: "transparent" }}
         >
           <div className="flex items-center gap-3">
-            <span className="text-3xl select-none">🦉</span>
-            <Link
-              href="/"
-              className="text-2xl font-extrabold tracking-tight text-blue-600 drop-shadow font-[Comic Sans MS,Comic Sans,cursive]"
-            >
+            <span className="text-2xl select-none">🦉</span>
+            <Link href="/" className="text-base font-semibold text-white tracking-wide">
               Math Quest
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/ai-math">
+            <Link href="/">
               <Button
                 size="sm"
-                variant="outline"
-                className="rounded-full border-2 border-blue-300"
-                onClick={playClick}
+                className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none"
               >
-                AI Math
+                <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+                <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+                <span className="relative">Home</span>
               </Button>
             </Link>
             <Button
               size="sm"
-              className="ml-2 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-[Comic Sans MS,Comic Sans,cursive] border-2 border-pink-300"
               onClick={onLogout}
+              className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none"
             >
-              Logout
+              <span className="absolute inset-0 bg-gradient-to-r from-red-600/70 via-pink-500/70 to-fuchsia-600/70 backdrop-blur-md" />
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+              <span className="relative">Logout</span>
             </Button>
           </div>
         </nav>
 
         {/* Content */}
-        <main className="flex-1 px-4 py-8 z-10 relative">
+        <main className="flex-1 px-4 py-8 z-10 relative pt-20">
           <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Left column: Avatar + details + Recent activity */}
             <div className="md:col-span-1 space-y-6">

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { Button } from "../../components/ui/button";
 
 /* Learn AI Page now dedicated to an interactive neural network visualization with real weight math. */
 
@@ -10,14 +11,18 @@ export default function LearnAIPage() {
   return (
     <div className="min-h-screen w-full flex flex-col font-quicksand text-white relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_25%,rgba(59,7,100,0.45),rgba(24,26,42,0)_70%)] pointer-events-none" />
-      <header className="sticky top-0 z-20 backdrop-blur-md bg-transparent/30 px-4 py-3 flex flex-wrap items-center gap-3 border-b border-white/10">
-        <Link href="/" className="text-sm text-cyan-200 hover:underline">
-          ← Home
+      <nav className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none" style={{ background: "transparent" }}>
+        <div className="flex items-center gap-3">
+          <span className="text-base font-semibold tracking-wide text-white">Learn AI</span>
+        </div>
+        <Link href="/">
+          <Button size="sm" className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none">
+            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
+            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
+            <span className="relative">Home</span>
+          </Button>
         </Link>
-        <h1 className="text-lg font-semibold tracking-wide bg-gradient-to-r from-cyan-300 via-indigo-200 to-pink-300 bg-clip-text text-transparent">
-          Learn AI
-        </h1>
-      </header>
+      </nav>
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 py-10 flex flex-col gap-12">
         {/* Hero / Intro */}
         <section className="relative">
