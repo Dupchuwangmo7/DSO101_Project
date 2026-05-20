@@ -1,8 +1,10 @@
 # ─────────────────────────────────────────────
 # Stage 1: Install production dependencies only
 # ─────────────────────────────────────────────
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat python3 make g++
+FROM node:20-slim AS deps
+RUN apt-get update && apt-get install -y \
+    python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps --omit=dev
@@ -10,8 +12,10 @@ RUN npm ci --legacy-peer-deps --omit=dev
 # ─────────────────────────────────────────────
 # Stage 2: Build (all deps + compile TypeScript)
 # ─────────────────────────────────────────────
-FROM node:20-alpine AS builder
-RUN apk add --no-cache libc6-compat python3 make g++
+FROM node:20-slim AS builder
+RUN apt-get update && apt-get install -y \
+    python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
@@ -19,12 +23,13 @@ COPY . .
 RUN npm run build
 
 # ─────────────────────────────────────────────
-# Stage 3: Production runner (smallest image)
+# Stage 3: Production runner
+# Uses node:20-slim (glibc) — required by onnxruntime-node
 # ─────────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 
 RUN addgroup --system --gid 1001 nestjs && \
-    adduser  --system --uid 1001 nestjs
+    adduser  --system --uid 1001 --ingroup nestjs nestjs
 
 WORKDIR /app
 
