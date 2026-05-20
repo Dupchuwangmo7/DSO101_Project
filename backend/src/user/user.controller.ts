@@ -27,7 +27,7 @@ class OptionalJwtGuard extends AuthGuard('jwt') {
     return super.canActivate(ctx);
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleRequest(_err: any, user: any) {
+ handleRequest(_err: any, user: any): any {
     return user ?? null;
   }
 }
