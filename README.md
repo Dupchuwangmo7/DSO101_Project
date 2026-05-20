@@ -253,3 +253,6 @@ docker run --rm aquasec/trivy image ghcr.io/yourorg/aimath-backend:latest
 ### SonarCloud quality gate fails
 Go to sonarcloud.io → your project → Issues tab.  
 Most common: test coverage below threshold → add more unit tests.
+
+
+nkxjNXJ
