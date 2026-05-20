@@ -1,0 +1,142 @@
+version: "3.9"
+
+# ── For LOCAL DEVELOPMENT only ─────────────────────────
+# On Render, each service is deployed separately.
+# Use this file to run the full stack on your machine.
+# ───────────────────────────────────────────────────────
+
+networks:
+  app-net:
+    driver: bridge
+  monitor-net:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  prometheus-data:
+  grafana-data:
+
+services:
+
+  # ── PostgreSQL ─────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: aimath-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB:       ${DB_DATABASE:-education_math_db}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ── NestJS Backend ─────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aimath-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV:          production
+      PORT:              3001
+      DB_HOST:           postgres
+      DB_PORT:           5432
+      DB_USERNAME:       ${DB_USERNAME:-postgres}
+      DB_PASSWORD:       ${DB_PASSWORD:-postgres}
+      DB_DATABASE:       ${DB_DATABASE:-education_math_db}
+      JWT_SECRET:        ${JWT_SECRET:-dev_jwt_secret_change_in_prod}
+      COOKIE_SECRET:     ${COOKIE_SECRET:-dev_cookie_secret_change_in_prod}
+      FRONTEND_ORIGIN:   ${FRONTEND_ORIGIN:-http://localhost:3000}
+      ELEVENLABS_API_KEY:   ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID:  ${ELEVENLABS_VOICE_ID:-}
+      GOOGLE_AI_API_KEY:    ${GOOGLE_AI_API_KEY:-}
+      TYPEORM_SYNC:      "true"
+      BODY_LIMIT:        25mb
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ── Next.js Frontend ────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:3001}
+    container_name: aimath-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT:     3000
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ── Prometheus ──────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: aimath-prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - ./devops/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - app-net
+      - monitor-net
+
+  # ── Grafana ─────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: aimath-grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_USER:     ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP:     "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3100:3000"
+    networks:
+      - monitor-net
