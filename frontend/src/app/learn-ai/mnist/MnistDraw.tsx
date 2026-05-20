@@ -1,5 +1,5 @@
-"use client";
-import React, { useRef, useState, useEffect, useCallback } from "react";
+'use client';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 /*
   MnistDraw: Freehand 28x28 digit drawing with real-time inference using exported PyTorch MLP weights.
@@ -41,7 +41,7 @@ const MnistDraw: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/mnist_mlp.json")
+    fetch('/mnist_mlp.json')
       .then((r) => r.json())
       .then((j: ModelPayload) => {
         setModel(j);
@@ -53,9 +53,9 @@ const MnistDraw: React.FC = () => {
   const drawStroke = useCallback((cx: number, cy: number) => {
     const c = canvasRef.current;
     if (!c) return;
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
     if (!ctx) return;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = 'white';
     const r = 8; // brush radius
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -75,14 +75,14 @@ const MnistDraw: React.FC = () => {
   };
   const pointerUp = () => setIsDown(false);
   useEffect(() => {
-    window.addEventListener("pointerup", pointerUp);
-    return () => window.removeEventListener("pointerup", pointerUp);
+    window.addEventListener('pointerup', pointerUp);
+    return () => window.removeEventListener('pointerup', pointerUp);
   }, []);
 
   const clear = () => {
     const c = canvasRef.current;
     if (!c) return;
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, SIZE, SIZE);
     setRaw(Array(GRID * GRID).fill(0));
@@ -92,7 +92,7 @@ const MnistDraw: React.FC = () => {
   const updateArray = () => {
     const c = canvasRef.current;
     if (!c) return;
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
     if (!ctx) return;
     const scale = SIZE / GRID;
     const arr: number[] = [];
@@ -133,10 +133,10 @@ const MnistDraw: React.FC = () => {
         return row.reduce((a, w, j) => a + w * norm[j], L1.b[i]);
       }).map(relu);
       const h2 = L2.W.map((row, i) =>
-        row.reduce((a, w, j) => a + w * h1[j], L2.b[i])
+        row.reduce((a, w, j) => a + w * h1[j], L2.b[i]),
       ).map(relu);
       const logits = L3.W.map((row, i) =>
-        row.reduce((a, w, j) => a + w * h2[j], L3.b[i])
+        row.reduce((a, w, j) => a + w * h2[j], L3.b[i]),
       );
       setProbs(softmax(logits));
     }, 60);
@@ -186,8 +186,8 @@ const MnistDraw: React.FC = () => {
                     key={i}
                     className={`p-2 rounded-lg border ${
                       hi
-                        ? "border-cyan-400/50 bg-cyan-400/20"
-                        : "border-white/10 bg-white/5"
+                        ? 'border-cyan-400/50 bg-cyan-400/20'
+                        : 'border-white/10 bg-white/5'
                     } flex flex-col items-center`}
                   >
                     <span className="text-sm font-semibold">{i}</span>

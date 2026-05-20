@@ -1,11 +1,11 @@
-"use client";
+'use client';
 import React, {
   useState,
   useEffect,
   useMemo,
   useCallback,
   useRef,
-} from "react";
+} from 'react';
 
 /*
   NeuralNetworkDemo (with real simple math)
@@ -30,10 +30,10 @@ interface ClassDef {
 }
 // Output classes (Pixel Grid replaced by Pentagon)
 const CLASSES: ClassDef[] = [
-  { id: "circle", label: "Circle", icon: "◯", color: "#38bdf8" },
-  { id: "square", label: "Square", icon: "▣", color: "#a78bfa" },
-  { id: "triangle", label: "Triangle", icon: "△", color: "#f472b6" },
-  { id: "pentagon", label: "Pentagon", icon: "⬠", color: "#34d399" },
+  { id: 'circle', label: 'Circle', icon: '◯', color: '#38bdf8' },
+  { id: 'square', label: 'Square', icon: '▣', color: '#a78bfa' },
+  { id: 'triangle', label: 'Triangle', icon: '△', color: '#f472b6' },
+  { id: 'pentagon', label: 'Pentagon', icon: '⬠', color: '#34d399' },
 ];
 
 // Canvas + feature pooling
@@ -66,7 +66,7 @@ function softmax(arr: number[]) {
 
 export const NeuralNetworkDemo: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const [drawMode, setDrawMode] = useState<"draw" | "erase">("draw");
+  const [drawMode, setDrawMode] = useState<'draw' | 'erase'>('draw');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastPoint = useRef<{ x: number; y: number } | null>(null);
   const [showMath, setShowMath] = useState(false);
@@ -76,7 +76,7 @@ export const NeuralNetworkDemo: React.FC = () => {
   } | null>(null);
   const [predHistory, setPredHistory] = useState<number[]>([]); // recent final predictions
   const [userSamples, setUserSamples] = useState<{ x: number[]; y: number }[]>(
-    []
+    [],
   ); // collected freehand samples
   // Automatic synthetic pre-training status
   const [pretraining, setPretraining] = useState(true);
@@ -84,7 +84,7 @@ export const NeuralNetworkDemo: React.FC = () => {
   const [preLoss, setPreLoss] = useState<number | null>(null);
   const TOTAL_PRE_EPOCHS = 80;
   const [features, setFeatures] = useState<number[]>(() =>
-    Array(INPUT_SIZE).fill(0)
+    Array(INPUT_SIZE).fill(0),
   );
   const [featMean, setFeatMean] = useState<number[] | null>(null); // normalization mean
   const [featStd, setFeatStd] = useState<number[] | null>(null); // normalization std
@@ -100,8 +100,8 @@ export const NeuralNetworkDemo: React.FC = () => {
   const [isTuning, setIsTuning] = useState(false);
   const [autoTrain, setAutoTrain] = useState(false);
   const [autoTrainMode, setAutoTrainMode] = useState<
-    "predicted" | "circle" | "square" | "triangle" | "pentagon"
-  >("predicted");
+    'predicted' | 'circle' | 'square' | 'triangle' | 'pentagon'
+  >('predicted');
   const [pendingAuto, setPendingAuto] = useState(false);
 
   // Forward pass with optional normalization
@@ -114,15 +114,15 @@ export const NeuralNetworkDemo: React.FC = () => {
         ? raw.map((v, i) => (v - featMean[i]) / (featStd[i] || 1))
         : raw;
     const z1: number[] = Array.from({ length: HIDDEN1 }, (_, j) =>
-      x.reduce((acc, xi, i) => acc + xi * W1[i][j], b1[j])
+      x.reduce((acc, xi, i) => acc + xi * W1[i][j], b1[j]),
     );
     const h1 = z1.map(relu);
     const z2: number[] = Array.from({ length: HIDDEN2 }, (_, j) =>
-      h1.reduce((acc, v, i) => acc + v * W2[i][j], b2[j])
+      h1.reduce((acc, v, i) => acc + v * W2[i][j], b2[j]),
     );
     const h2 = z2.map(relu);
     let logits: number[] = Array.from({ length: CLASSES.length }, (_, j) =>
-      h2.reduce((acc, v, i) => acc + v * W3[i][j], b3[j])
+      h2.reduce((acc, v, i) => acc + v * W3[i][j], b3[j]),
     );
     // subtract log priors to debias oversampled classes
     if (logPriors && logPriors.length === logits.length) {
@@ -142,7 +142,7 @@ export const NeuralNetworkDemo: React.FC = () => {
       const fused = p.map(
         (v, i) =>
           Math.pow(Math.max(v, 1e-8), 1 - alpha) *
-          Math.pow(Math.max(heuristic.probs[i], 1e-8), alpha)
+          Math.pow(Math.max(heuristic.probs[i], 1e-8), alpha),
       );
       const sumF = fused.reduce((a, b) => a + b, 0);
       p = fused.map((v) => v / sumF);
@@ -158,7 +158,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           const fused2 = forward.probs.map(
             (v, i) =>
               Math.pow(Math.max(v, 1e-8), 1 - beta) *
-              Math.pow(Math.max(heuristic.probs[i], 1e-8), beta)
+              Math.pow(Math.max(heuristic.probs[i], 1e-8), beta),
           );
           const s2 = fused2.reduce((a, b) => a + b, 0);
           p = fused2.map((v) => v / s2);
@@ -258,7 +258,7 @@ export const NeuralNetworkDemo: React.FC = () => {
     }
   };
   const clearCanvas = useCallback(() => {
-    const ctx = canvasRef.current?.getContext("2d");
+    const ctx = canvasRef.current?.getContext('2d');
     if (ctx) ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     setFeatures(Array(INPUT_SIZE).fill(0));
     setPhase(0);
@@ -285,15 +285,15 @@ export const NeuralNetworkDemo: React.FC = () => {
         for (let step = 0; step < steps; step++) {
           // Forward
           const z1 = Array.from({ length: HIDDEN1 }, (_, j) =>
-            x.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j])
+            x.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j]),
           );
           const h1 = z1.map((v) => (v > 0 ? v : 0));
           const z2 = Array.from({ length: HIDDEN2 }, (_, j) =>
-            h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j])
+            h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j]),
           );
           const h2 = z2.map((v) => (v > 0 ? v : 0));
           const logits = Array.from({ length: CLASSES.length }, (_, j) =>
-            h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j])
+            h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j]),
           );
           const m = Math.max(...logits);
           const exps = logits.map((L) => Math.exp(L - m));
@@ -302,7 +302,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           // Gradients (single sample)
           const dLogits = probs.map((p, j) => p - (j === classIndex ? 1 : 0));
           const gW3 = Array.from({ length: HIDDEN2 }, () =>
-            Array(CLASSES.length).fill(0)
+            Array(CLASSES.length).fill(0),
           );
           const gb3 = Array(CLASSES.length).fill(0);
           for (let j = 0; j < CLASSES.length; j++) {
@@ -318,7 +318,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           }
           const dz2 = dh2.map((v, i) => (z2[i] > 0 ? 1 : 0) * v);
           const gW2 = Array.from({ length: HIDDEN1 }, () =>
-            Array(HIDDEN2).fill(0)
+            Array(HIDDEN2).fill(0),
           );
           const gb2 = Array(HIDDEN2).fill(0);
           for (let j = 0; j < HIDDEN2; j++) {
@@ -333,7 +333,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           }
           const dz1 = dh1.map((v, i) => (z1[i] > 0 ? 1 : 0) * v);
           const gW1 = Array.from({ length: INPUT_SIZE }, () =>
-            Array(HIDDEN1).fill(0)
+            Array(HIDDEN1).fill(0),
           );
           const gb1 = Array(HIDDEN1).fill(0);
           for (let j = 0; j < HIDDEN1; j++) {
@@ -367,7 +367,19 @@ export const NeuralNetworkDemo: React.FC = () => {
         setIsTuning(false);
       }
     },
-    [pretraining, isTuning, features, featMean, featStd, W1, b1, W2, b2, W3, b3]
+    [
+      pretraining,
+      isTuning,
+      features,
+      featMean,
+      featStd,
+      W1,
+      b1,
+      W2,
+      b2,
+      W3,
+      b3,
+    ],
   );
 
   // Batch training on accumulated user samples (multi-epoch small gradient descent)
@@ -395,32 +407,32 @@ export const NeuralNetworkDemo: React.FC = () => {
         }
         // accumulate full-batch grads for stability
         const gW1 = Array.from({ length: INPUT_SIZE }, () =>
-          Array(HIDDEN1).fill(0)
+          Array(HIDDEN1).fill(0),
         );
         const gb1 = Array(HIDDEN1).fill(0);
         const gW2 = Array.from({ length: HIDDEN1 }, () =>
-          Array(HIDDEN2).fill(0)
+          Array(HIDDEN2).fill(0),
         );
         const gb2 = Array(HIDDEN2).fill(0);
         const gW3 = Array.from({ length: HIDDEN2 }, () =>
-          Array(CLASSES.length).fill(0)
+          Array(CLASSES.length).fill(0),
         );
         const gb3 = Array(CLASSES.length).fill(0);
         for (const k of idxs) {
           const sample = userSamples[k];
           const xNorm = sample.x.map(
-            (v, i) => (v - featMean[i]) / (featStd[i] || 1)
+            (v, i) => (v - featMean[i]) / (featStd[i] || 1),
           );
           const z1 = Array.from({ length: HIDDEN1 }, (_, j) =>
-            xNorm.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j])
+            xNorm.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j]),
           );
           const h1 = z1.map((v) => (v > 0 ? v : 0));
           const z2 = Array.from({ length: HIDDEN2 }, (_, j) =>
-            h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j])
+            h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j]),
           );
           const h2 = z2.map((v) => (v > 0 ? v : 0));
           const logits = Array.from({ length: CLASSES.length }, (_, j) =>
-            h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j])
+            h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j]),
           );
           const m = Math.max(...logits);
           const exps = logits.map((L) => Math.exp(L - m));
@@ -509,7 +521,7 @@ export const NeuralNetworkDemo: React.FC = () => {
   const updateFeaturesFromCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const img = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     // bounding box of ink
@@ -538,10 +550,10 @@ export const NeuralNetworkDemo: React.FC = () => {
     }
     const bw = maxX - minX + 1,
       bh = maxY - minY + 1;
-    const norm = document.createElement("canvas");
+    const norm = document.createElement('canvas');
     norm.width = CANVAS_SIZE;
     norm.height = CANVAS_SIZE;
-    const nctx = norm.getContext("2d");
+    const nctx = norm.getContext('2d');
     if (!nctx) return;
     const scale = (0.85 * CANVAS_SIZE) / Math.max(bw, bh);
     const dw = bw * scale,
@@ -631,7 +643,7 @@ export const NeuralNetworkDemo: React.FC = () => {
         m2 = Math.hypot(v2x, v2y);
       if (!m1 || !m2) continue;
       const ang = Math.acos(
-        Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2)))
+        Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2))),
       );
       if (ang > Math.PI / 6 && ang < Math.PI - Math.PI / 6) corners++;
     }
@@ -718,7 +730,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           m2 = Math.hypot(v2x, v2y);
         if (!m1 || !m2) continue;
         const ang = Math.acos(
-          Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2)))
+          Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2))),
         );
         if (ang > Math.PI / 6 && ang < Math.PI - Math.PI / 6) corners++;
       }
@@ -738,7 +750,7 @@ export const NeuralNetworkDemo: React.FC = () => {
       const triCornerTerm = Math.exp(-Math.pow((corners - 3) / 1.5, 2));
       const triFillTerm = Math.exp(-Math.pow((fill - 0.38) / 0.28, 2));
       const triCircPenalty = Math.exp(
-        -Math.pow((circularity - 0.35) / 0.25, 2)
+        -Math.pow((circularity - 0.35) / 0.25, 2),
       );
       scores.triangle = triCornerTerm * triFillTerm * triCircPenalty;
       scores.pentagon =
@@ -761,17 +773,17 @@ export const NeuralNetworkDemo: React.FC = () => {
     (x: number, y: number) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
       ctx.lineWidth = 14;
-      if (drawMode === "draw") {
-        ctx.globalCompositeOperation = "source-over";
-        ctx.strokeStyle = "#06b6d4";
+      if (drawMode === 'draw') {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = '#06b6d4';
       } else {
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.strokeStyle = "rgba(0,0,0,1)";
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.strokeStyle = 'rgba(0,0,0,1)';
       }
       ctx.beginPath();
       if (!lastPoint.current) {
@@ -783,16 +795,16 @@ export const NeuralNetworkDemo: React.FC = () => {
       ctx.stroke();
       lastPoint.current = { x, y };
     },
-    [drawMode]
+    [drawMode],
   );
 
   // Synthetic shape generator & pretraining
   useEffect(() => {
     if (!pretraining) return;
-    const OFF = document.createElement("canvas");
+    const OFF = document.createElement('canvas');
     OFF.width = CANVAS_SIZE;
     OFF.height = CANVAS_SIZE;
-    const ctx = OFF.getContext("2d");
+    const ctx = OFF.getContext('2d');
     if (!ctx) return;
     interface Sample {
       x: number[];
@@ -806,20 +818,20 @@ export const NeuralNetworkDemo: React.FC = () => {
       ctx.save();
       ctx.translate(
         CANVAS_SIZE / 2 + (Math.random() * 70 - 35),
-        CANVAS_SIZE / 2 + (Math.random() * 70 - 35)
+        CANVAS_SIZE / 2 + (Math.random() * 70 - 35),
       );
       const scale = 0.36 + Math.random() * 0.44;
-      const angle = ((Math.random() * Math.PI) / 2) * (id === "circle" ? 0 : 1);
+      const angle = ((Math.random() * Math.PI) / 2) * (id === 'circle' ? 0 : 1);
       ctx.rotate(angle);
       ctx.scale(scale, scale);
       ctx.beginPath();
       const R = (CANVAS_SIZE / 2) * 0.9;
-      if (id === "circle") {
+      if (id === 'circle') {
         ctx.arc(0, 0, R, 0, Math.PI * 2);
-      } else if (id === "square") {
+      } else if (id === 'square') {
         const s = R * 1.32;
         ctx.rect(-s / 2, -s / 2, s, s);
-      } else if (id === "triangle") {
+      } else if (id === 'triangle') {
         const r = R * 1.22;
         const open = Math.random() < 0.35;
         for (let i = 0; i < 3; i++) {
@@ -831,7 +843,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           else ctx.lineTo(x, y);
         }
         if (!open) ctx.closePath();
-      } else if (id === "pentagon") {
+      } else if (id === 'pentagon') {
         const r = R * 1.12;
         for (let i = 0; i < 5; i++) {
           const a =
@@ -849,20 +861,20 @@ export const NeuralNetworkDemo: React.FC = () => {
       const strokeMode = Math.random() < 0.72;
       if (strokeMode) {
         ctx.lineWidth = 8 + Math.random() * 20;
-        ctx.lineJoin = "round";
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "rgba(255,255,255,1)";
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgba(255,255,255,1)';
         ctx.stroke();
-        if (id === "triangle" && Math.random() < 0.22) {
+        if (id === 'triangle' && Math.random() < 0.22) {
           ctx.lineWidth += 6;
           ctx.stroke();
         }
       } else {
-        ctx.fillStyle = "rgba(255,255,255,1)";
+        ctx.fillStyle = 'rgba(255,255,255,1)';
         ctx.fill();
         if (Math.random() < 0.5) {
           ctx.lineWidth = 4 + Math.random() * 10;
-          ctx.strokeStyle = "rgba(255,255,255,1)";
+          ctx.strokeStyle = 'rgba(255,255,255,1)';
           ctx.stroke();
         }
       }
@@ -963,7 +975,7 @@ export const NeuralNetworkDemo: React.FC = () => {
           m2 = Math.hypot(v2x, v2y);
         if (!m1 || !m2) continue;
         const ang = Math.acos(
-          Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2)))
+          Math.min(1, Math.max(-1, (v1x * v2x + v1y * v2y) / (m1 * m2))),
         );
         if (ang > Math.PI / 6 && ang < Math.PI - Math.PI / 6) corners++;
       }
@@ -981,13 +993,13 @@ export const NeuralNetworkDemo: React.FC = () => {
     }
     const classCounts: number[] = Array(CLASSES.length).fill(0);
     CLASSES.forEach((c, ci) => {
-      const extra = c.id === "triangle" ? Math.round(perClass * 0.15) : 0;
+      const extra = c.id === 'triangle' ? Math.round(perClass * 0.15) : 0;
       const total = perClass + extra;
       for (let k = 0; k < total; k++) {
         drawShape(c.id);
         const base = poolFeaturesAndGeom();
         const x = base.map((v) =>
-          Math.min(1, Math.max(0, v + (Math.random() * 0.06 - 0.03)))
+          Math.min(1, Math.max(0, v + (Math.random() * 0.06 - 0.03))),
         );
         dataset.push({ x, y: ci });
         classCounts[ci]++;
@@ -1002,7 +1014,7 @@ export const NeuralNetworkDemo: React.FC = () => {
       s.x.forEach((v, i) => {
         const d = v - mean[i];
         variance[i] += d * d;
-      })
+      }),
     );
     for (let i = 0; i < INPUT_SIZE; i++) variance[i] /= dataset.length;
     const std = variance.map((v) => Math.sqrt(v) + 1e-6);
@@ -1031,28 +1043,28 @@ export const NeuralNetworkDemo: React.FC = () => {
         return;
       }
       const gW1 = Array.from({ length: INPUT_SIZE }, () =>
-        Array(HIDDEN1).fill(0)
+        Array(HIDDEN1).fill(0),
       );
       const gb1 = Array(HIDDEN1).fill(0);
       const gW2 = Array.from({ length: HIDDEN1 }, () => Array(HIDDEN2).fill(0));
       const gb2 = Array(HIDDEN2).fill(0);
       const gW3 = Array.from({ length: HIDDEN2 }, () =>
-        Array(CLASSES.length).fill(0)
+        Array(CLASSES.length).fill(0),
       );
       const gb3 = Array(CLASSES.length).fill(0);
       let totalLoss = 0;
       for (const sample of dataset) {
         const x = sample.x.map((v, i) => (v - mean[i]) / std[i]);
         const z1 = Array.from({ length: HIDDEN1 }, (_, j) =>
-          x.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j])
+          x.reduce((a, xi, i) => a + xi * W1l[i][j], b1l[j]),
         );
         const h1 = z1.map((v) => (v > 0 ? v : 0));
         const z2 = Array.from({ length: HIDDEN2 }, (_, j) =>
-          h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j])
+          h1.reduce((a, v, i) => a + v * W2l[i][j], b2l[j]),
         );
         const h2 = z2.map((v) => (v > 0 ? v : 0));
         const logits = Array.from({ length: CLASSES.length }, (_, j) =>
-          h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j])
+          h2.reduce((a, v, i) => a + v * W3l[i][j], b3l[j]),
         );
         const m = Math.max(...logits);
         const exps = logits.map((L) => Math.exp(L - m));
@@ -1144,15 +1156,15 @@ export const NeuralNetworkDemo: React.FC = () => {
 
   // Attach global pointerup to finish stroke
   useEffect(() => {
-    window.addEventListener("pointerup", endStroke);
-    return () => window.removeEventListener("pointerup", endStroke);
+    window.addEventListener('pointerup', endStroke);
+    return () => window.removeEventListener('pointerup', endStroke);
   }, [endStroke]);
 
   useEffect(() => {
     if (!pendingAuto || !autoTrain || pretraining || !finalProbs) return;
     // Prevent feedback loop if predicted same class (esp triangle) too many times consecutively without user labeling
     if (
-      autoTrainMode === "predicted" &&
+      autoTrainMode === 'predicted' &&
       predHistory
         .slice(-5)
         .every((i) => i === predHistory[predHistory.length - 1])
@@ -1165,7 +1177,7 @@ export const NeuralNetworkDemo: React.FC = () => {
       return;
     }
     let targetIdx = -1;
-    if (autoTrainMode === "predicted")
+    if (autoTrainMode === 'predicted')
       targetIdx = finalProbs.indexOf(Math.max(...finalProbs));
     else targetIdx = CLASSES.findIndex((c) => c.id === autoTrainMode);
     if (targetIdx >= 0) fineTune(targetIdx);
@@ -1196,7 +1208,7 @@ export const NeuralNetworkDemo: React.FC = () => {
             onClick={() => setShowMath((s) => !s)}
             className="px-3 py-1 rounded-full text-[11px] bg-white/10 hover:bg-white/15 border border-white/15"
           >
-            {showMath ? "Hide Math" : "Show Math"}
+            {showMath ? 'Hide Math' : 'Show Math'}
           </button>
           <button
             onClick={randomize}
@@ -1207,11 +1219,11 @@ export const NeuralNetworkDemo: React.FC = () => {
           </button>
           <button
             onClick={() =>
-              setDrawMode((m) => (m === "draw" ? "erase" : "draw"))
+              setDrawMode((m) => (m === 'draw' ? 'erase' : 'draw'))
             }
             className="px-3 py-1 rounded-full text-[11px] bg-white/10 hover:bg-white/15 border border-white/15"
           >
-            {drawMode === "draw" ? "Erase" : "Draw"} Mode
+            {drawMode === 'draw' ? 'Erase' : 'Draw'} Mode
           </button>
           <button
             onClick={clearCanvas}
@@ -1251,13 +1263,13 @@ export const NeuralNetworkDemo: React.FC = () => {
           </div>
           <div className="mt-2 flex flex-wrap gap-3 text-[10px] text-indigo-200/70 w-full justify-between">
             <span>
-              {drawMode === "draw" ? "Drawing" : "Erasing"} • 64 pooled + geom
+              {drawMode === 'draw' ? 'Drawing' : 'Erasing'} • 64 pooled + geom
               features
             </span>
             <span>
               {forward
-                ? "Active feats: " + forward.x.filter((v) => v > 0.05).length
-                : "No input yet"}
+                ? 'Active feats: ' + forward.x.filter((v) => v > 0.05).length
+                : 'No input yet'}
             </span>
           </div>
         </div>
@@ -1317,7 +1329,7 @@ export const NeuralNetworkDemo: React.FC = () => {
             {CLASSES.map((c, i) => {
               const cnt = userSamples.reduce(
                 (a, s) => a + (s.y === i ? 1 : 0),
-                0
+                0,
               );
               return (
                 <span key={c.id}>
@@ -1380,8 +1392,8 @@ export const NeuralNetworkDemo: React.FC = () => {
                           </text>
                           <title>
                             Hidden1 {j} act {val.toFixed(4)}
-                            {"\n"}Incoming weights:{" "}
-                            {W1.map((r) => r[j].toFixed(2)).join(", ")}
+                            {'\n'}Incoming weights:{' '}
+                            {W1.map((r) => r[j].toFixed(2)).join(', ')}
                           </title>
                         </g>
                       );
@@ -1415,8 +1427,8 @@ export const NeuralNetworkDemo: React.FC = () => {
                           </text>
                           <title>
                             Hidden2 {j} act {val.toFixed(4)}
-                            {"\n"}Incoming weights:{" "}
-                            {W2.map((r) => r[j].toFixed(2)).join(", ")}
+                            {'\n'}Incoming weights:{' '}
+                            {W2.map((r) => r[j].toFixed(2)).join(', ')}
                           </title>
                         </g>
                       );
@@ -1440,7 +1452,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                             width={44}
                             height={44}
                             rx={10}
-                            fill={highlight ? s.color : "#1e293b"}
+                            fill={highlight ? s.color : '#1e293b'}
                             stroke={s.color}
                             strokeWidth={highlight ? 3 : 1.5}
                           />
@@ -1450,7 +1462,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                             fontSize={16}
                             textAnchor="middle"
                             fontFamily="monospace"
-                            fill={highlight ? "#0f172a" : s.color}
+                            fill={highlight ? '#0f172a' : s.color}
                           >
                             {s.icon}
                           </text>
@@ -1467,7 +1479,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                           )}
                           <title>
                             Class {s.label}
-                            {"\n"}prob {(prob * 100).toFixed(2)}%
+                            {'\n'}prob {(prob * 100).toFixed(2)}%
                           </title>
                         </g>
                       );
@@ -1481,7 +1493,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                         const ty = top + j * (span / (HIDDEN2 - 1));
                         const w = W2[i][j];
                         const width = 0.35 + (Math.abs(w) / maxAbsW2) * 2.0;
-                        const color = w >= 0 ? "#6366f1" : "#ec4899";
+                        const color = w >= 0 ? '#6366f1' : '#ec4899';
                         const opacity = 0.12 + (Math.abs(w) / maxAbsW2) * 0.78;
                         const active = phase >= 2;
                         return (
@@ -1496,7 +1508,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                             strokeOpacity={active ? opacity : 0.04}
                           />
                         );
-                      })
+                      }),
                     )}
                     {/* Edges: H2 -> OUT */}
                     {Array.from({ length: HIDDEN2 }).flatMap((_, i) =>
@@ -1507,7 +1519,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                         const ty = 70 + j * 80;
                         const w = W3[i][j];
                         const width = 0.4 + (Math.abs(w) / maxAbsW3) * 2.0;
-                        const color = w >= 0 ? "#06b6d4" : "#ec4899";
+                        const color = w >= 0 ? '#06b6d4' : '#ec4899';
                         const opacity = 0.15 + (Math.abs(w) / maxAbsW3) * 0.8;
                         const active = phase === 3;
                         return (
@@ -1522,7 +1534,7 @@ export const NeuralNetworkDemo: React.FC = () => {
                             strokeOpacity={active ? opacity : 0.05}
                           />
                         );
-                      })
+                      }),
                     )}
                   </g>
                 );
@@ -1535,7 +1547,7 @@ export const NeuralNetworkDemo: React.FC = () => {
         <div className="flex justify-between flex-wrap gap-2">
           {pretraining ? (
             <span className="text-indigo-200/70">
-              Pre-training shape network... Epoch {preEpoch}/{TOTAL_PRE_EPOCHS}{" "}
+              Pre-training shape network... Epoch {preEpoch}/{TOTAL_PRE_EPOCHS}{' '}
               {preLoss !== null && `(loss ${preLoss.toFixed(3)})`}
             </span>
           ) : (
@@ -1548,18 +1560,18 @@ export const NeuralNetworkDemo: React.FC = () => {
         {forward && finalProbs && heuristic && (
           <div className="text-indigo-200/70 flex flex-wrap gap-3">
             <span>
-              Net:{" "}
+              Net:{' '}
               {CLASSES[forward.probs.indexOf(Math.max(...forward.probs))].label}
             </span>
             <span>
-              Heuristic:{" "}
+              Heuristic:{' '}
               {
                 CLASSES[heuristic.probs.indexOf(Math.max(...heuristic.probs))]
                   .label
               }
             </span>
             <span>
-              Final:{" "}
+              Final:{' '}
               {CLASSES[finalProbs.indexOf(Math.max(...finalProbs))].label}
             </span>
           </div>
@@ -1571,19 +1583,19 @@ export const NeuralNetworkDemo: React.FC = () => {
           <div>
             <b className="text-cyan-200">
               Input x (64 pooled + geom features):
-            </b>{" "}
-            [{forward.x.map((v) => v.toFixed(3)).join(", ")}]
+            </b>{' '}
+            [{forward.x.map((v) => v.toFixed(3)).join(', ')}]
           </div>
           <div className="overflow-auto">
             <b className="text-cyan-200">Layer 1: z1 = x·W1 + b1 → ReLU</b>
             <div className="mt-1">
-              h1 = [{forward.h1.map((v) => v.toFixed(3)).join(", ")}]
+              h1 = [{forward.h1.map((v) => v.toFixed(3)).join(', ')}]
             </div>
           </div>
           <div className="overflow-auto">
             <b className="text-cyan-200">Layer 2: z2 = h1·W2 + b2 → ReLU</b>
             <div className="mt-1">
-              h2 = [{forward.h2.map((v) => v.toFixed(3)).join(", ")}]
+              h2 = [{forward.h2.map((v) => v.toFixed(3)).join(', ')}]
             </div>
           </div>
           <div className="overflow-auto">
@@ -1591,13 +1603,13 @@ export const NeuralNetworkDemo: React.FC = () => {
               Output: logits = h2·W3 + b3 → softmax
             </b>
             <div className="mt-1">
-              logits = [{forward.logits.map((v) => v.toFixed(3)).join(", ")}]
+              logits = [{forward.logits.map((v) => v.toFixed(3)).join(', ')}]
             </div>
             <div className="mt-1">
               probs = [
               {(finalProbs || blendedProbs || forward.probs)
                 .map((v) => v.toFixed(3))
-                .join(", ")}
+                .join(', ')}
               ]
             </div>
           </div>

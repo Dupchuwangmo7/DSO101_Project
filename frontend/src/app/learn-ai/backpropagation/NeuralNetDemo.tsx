@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // Helper for animated neuron box
 function NeuronBox({
@@ -55,7 +55,7 @@ export default function NeuralNetDemo() {
   const [v, setV] = React.useState(initialState.v);
   const [by, setBy] = React.useState(initialState.by);
   const [learningRate, setLearningRate] = React.useState(
-    initialState.learningRate
+    initialState.learningRate,
   );
 
   function resetAll() {
@@ -283,7 +283,7 @@ export default function NeuralNetDemo() {
           <span className="text-xs text-yellow-100/80">Learning rate (η):</span>
           <button
             className={`px-2 py-1 rounded text-xs font-bold border border-yellow-400/40 bg-yellow-500/20 hover:bg-yellow-500/40 transition ${
-              learningRate === 0.01 ? "ring-2 ring-yellow-300" : ""
+              learningRate === 0.01 ? 'ring-2 ring-yellow-300' : ''
             }`}
             onClick={() => setLearningRate(0.01)}
             aria-label="Set learning rate to 0.01"
@@ -292,7 +292,7 @@ export default function NeuralNetDemo() {
           </button>
           <button
             className={`px-2 py-1 rounded text-xs font-bold border border-yellow-400/40 bg-yellow-500/30 hover:bg-yellow-500/50 transition ${
-              learningRate === 0.1 ? "ring-2 ring-yellow-300" : ""
+              learningRate === 0.1 ? 'ring-2 ring-yellow-300' : ''
             }`}
             onClick={() => setLearningRate(0.1)}
             aria-label="Set learning rate to 0.1"
@@ -301,7 +301,7 @@ export default function NeuralNetDemo() {
           </button>
           <button
             className={`px-2 py-1 rounded text-xs font-bold border border-yellow-400/40 bg-yellow-500/50 hover:bg-yellow-500/70 transition ${
-              learningRate === 0.5 ? "ring-2 ring-yellow-300" : ""
+              learningRate === 0.5 ? 'ring-2 ring-yellow-300' : ''
             }`}
             onClick={() => setLearningRate(0.5)}
             aria-label="Set learning rate to 0.5"
@@ -326,15 +326,15 @@ export default function NeuralNetDemo() {
         </button>
         <div className="flex flex-col gap-1 mt-2 text-sm text-yellow-100/90">
           <div>
-            Hidden value:{" "}
+            Hidden value:{' '}
             <span className="font-mono text-yellow-200">{h.toFixed(3)}</span>
           </div>
           <div>
-            Output:{" "}
+            Output:{' '}
             <span className="font-mono text-yellow-200">{y.toFixed(3)}</span>
           </div>
           <div>
-            Mistake:{" "}
+            Mistake:{' '}
             <span className="font-mono text-yellow-200">
               {error.toFixed(3)}
             </span>

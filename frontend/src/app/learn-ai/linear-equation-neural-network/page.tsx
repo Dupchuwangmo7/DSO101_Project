@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import Link from "next/link";
+'use client';
+import React from 'react';
+import Link from 'next/link';
 
 export default function LinearEquationNeuralNetworkPage() {
   return (
@@ -26,14 +26,14 @@ export default function LinearEquationNeuralNetworkPage() {
             </h2>
             <p className="text-indigo-100/80 text-base max-w-2xl">
               A linear equation is a math rule that makes a straight line when
-              you draw it. It looks like{" "}
-              <span className="text-cyan-200 font-bold">y = mx + b</span>, where{" "}
+              you draw it. It looks like{' '}
+              <span className="text-cyan-200 font-bold">y = mx + b</span>, where{' '}
               <span className="text-cyan-200">m</span> is the slope (how steep)
               and <span className="text-cyan-200">b</span> is where the line
               starts.
             </p>
             <div className="mt-4 text-[15px] text-cyan-100/90">
-              Try changing <span className="font-bold">m</span> and{" "}
+              Try changing <span className="font-bold">m</span> and{' '}
               <span className="font-bold">b</span> to see how the line moves!
             </div>
             {/* Simple interactive demo for line equation */}
@@ -49,7 +49,7 @@ export default function LinearEquationNeuralNetworkPage() {
           <p className="text-indigo-100/80 text-base max-w-2xl">
             Neural networks are smart computer programs that learn by stacking
             lots of linear equations and adding a twist called activation. Each
-            part (called a neuron) uses a rule like{" "}
+            part (called a neuron) uses a rule like{' '}
             <span className="text-cyan-200 font-bold">y = w·x + b</span> to make
             decisions.
           </p>
@@ -273,8 +273,8 @@ export default function LinearEquationNeuralNetworkPage() {
                   <b>How Do Neural Networks Work?</b>
                   <br />
                   When you give data to a neural network, it passes through all
-                  the layers. Each neuron multiplies the input by a{" "}
-                  <b>weight</b>, adds a <b>bias</b>, and then uses an{" "}
+                  the layers. Each neuron multiplies the input by a{' '}
+                  <b>weight</b>, adds a <b>bias</b>, and then uses an{' '}
                   <b>activation function</b> to decide what to send to the next
                   layer. This process is called <b>forward propagation</b>.
                 </p>
@@ -334,7 +334,7 @@ export default function LinearEquationNeuralNetworkPage() {
               <br />
               Neural networks learn by practicing! They make a guess, check if
               it’s right, and if it’s wrong, they change their weights and
-              biases to get better next time. This is done using{" "}
+              biases to get better next time. This is done using{' '}
               <b>backpropagation</b> and <b>gradient descent</b>—fancy words for
               adjusting the math to improve answers. The network repeats this
               process many times, getting smarter with each try.
@@ -504,7 +504,7 @@ export default function LinearEquationNeuralNetworkPage() {
             </div>
 
             <p className="mt-4 text-[13px] text-cyan-300/90">
-              Source:{" "}
+              Source:{' '}
               <a
                 href="https://www.geeksforgeeks.org/machine-learning/neural-networks-a-beginners-guide/"
                 target="_blank"
@@ -679,7 +679,7 @@ function LinearEquationDemo() {
                 stroke="#fff"
                 strokeWidth={2}
                 onPointerDown={() => handlePointerDown(i)}
-                style={{ cursor: "grab" }}
+                style={{ cursor: 'grab' }}
               />
             </g>
           );
@@ -713,13 +713,13 @@ function LinearEquationDemo() {
           <span className="text-cyan-100">{b.toFixed(2)}</span>
         </label>
         <div className="mt-2 text-[15px] text-cyan-300 font-bold">
-          Equation:{" "}
+          Equation:{' '}
           <span className="text-cyan-100">
             y = {m.toFixed(2)}x + {b.toFixed(2)}
           </span>
         </div>
         <div className="text-[14px] text-pink-200 mt-1">
-          Mean Squared Error:{" "}
+          Mean Squared Error:{' '}
           <span className="text-pink-100">{mse.toFixed(3)}</span>
         </div>
         <div className="text-xs text-cyan-100/80 mt-2 max-w-xs text-center">

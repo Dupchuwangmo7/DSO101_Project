@@ -1,13 +1,13 @@
-"use client";
-import NeuralNetDemo from "./NeuralNetDemo";
-import "katex/dist/katex.min.css";
-import katex from "katex";
-import Link from "next/link";
+'use client';
+import NeuralNetDemo from './NeuralNetDemo';
+import 'katex/dist/katex.min.css';
+import katex from 'katex';
+import Link from 'next/link';
 
 function K({
   tex,
   block = false,
-  size = "text-lg",
+  size = 'text-lg',
 }: {
   tex: string;
   block?: boolean;
@@ -15,7 +15,7 @@ function K({
 }) {
   return (
     <span
-      className={`katex-math ${block ? "block my-2" : "inline"} ${size}`}
+      className={`katex-math ${block ? 'block my-2' : 'inline'} ${size}`}
       dangerouslySetInnerHTML={{
         __html: katex.renderToString(tex, {
           throwOnError: false,
@@ -329,7 +329,7 @@ export default function BackpropagationPage() {
                     <div className="mt-2 flex flex-col items-center">
                       <K
                         tex={
-                          "\\text{Chain Rule: } \\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial \\hat{y}} \\cdot \\frac{\\partial \\hat{y}}{\\partial z} \\cdot \\frac{\\partial z}{\\partial w}"
+                          '\\text{Chain Rule: } \\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial \\hat{y}} \\cdot \\frac{\\partial \\hat{y}}{\\partial z} \\cdot \\frac{\\partial z}{\\partial w}'
                         }
                         block
                         size="text-2xl"
@@ -388,10 +388,10 @@ export default function BackpropagationPage() {
                   </li>
                   <li>
                     <b>Weight Update:</b> Weights and biases are updated using
-                    gradient descent:{" "}
-                    <K tex={"w = w - \\eta \\frac{\\partial L}{\\partial w}"} />
-                    ,{" "}
-                    <K tex={"b = b - \\eta \\frac{\\partial L}{\\partial b}"} />
+                    gradient descent:{' '}
+                    <K tex={'w = w - \\eta \\frac{\\partial L}{\\partial w}'} />
+                    ,{' '}
+                    <K tex={'b = b - \\eta \\frac{\\partial L}{\\partial b}'} />
                   </li>
                 </ol>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-yellow-200">
@@ -399,28 +399,28 @@ export default function BackpropagationPage() {
                 </h3>
                 <ul className="mb-4 list-disc pl-5">
                   <li>
-                    Let <K tex={"L"} /> be the loss function, <K tex={"w"} />{" "}
-                    the weights, <K tex={"y"} /> the true output, and{" "}
-                    <K tex={"\\hat{y}"} /> the predicted output.
+                    Let <K tex={'L'} /> be the loss function, <K tex={'w'} />{' '}
+                    the weights, <K tex={'y'} /> the true output, and{' '}
+                    <K tex={'\\hat{y}'} /> the predicted output.
                   </li>
                   <li>
-                    The goal is to minimize <K tex={"L(y, \\hat{y})"} /> by
-                    adjusting <K tex={"w"} /> and <K tex={"b"} />.
+                    The goal is to minimize <K tex={'L(y, \\hat{y})'} /> by
+                    adjusting <K tex={'w'} /> and <K tex={'b'} />.
                   </li>
                   <li>
                     Using the chain rule, we compute the partial derivatives of
                     the loss with respect to each parameter.
                   </li>
                   <li>
-                    For a neuron: <K tex={"z = w \\cdot x + b"} />,{" "}
-                    <K tex={"a = f(z)"} />, where <K tex={"f"} /> is the
+                    For a neuron: <K tex={'z = w \\cdot x + b'} />,{' '}
+                    <K tex={'a = f(z)'} />, where <K tex={'f'} /> is the
                     activation function.
                   </li>
                   <li>
-                    The gradient for each weight:{" "}
+                    The gradient for each weight:{' '}
                     <K
                       tex={
-                        "\\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial a} \\cdot \\frac{\\partial a}{\\partial z} \\cdot \\frac{\\partial z}{\\partial w}"
+                        '\\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial a} \\cdot \\frac{\\partial a}{\\partial z} \\cdot \\frac{\\partial z}{\\partial w}'
                       }
                     />
                   </li>
@@ -478,7 +478,7 @@ export default function BackpropagationPage() {
                 </ul>
                 <div className="mt-4">
                   <span className="text-[13px] text-yellow-300/80">
-                    Source:{" "}
+                    Source:{' '}
                     <a
                       href="https://www.geeksforgeeks.org/machine-learning/backpropagation-in-neural-network/"
                       target="_blank"

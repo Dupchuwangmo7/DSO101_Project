@@ -1,10 +1,10 @@
-"use client";
-import React from "react";
-import Link from "next/link";
-import dynamic from "next/dynamic";
+'use client';
+import React from 'react';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 // Real-time network visualization version
-const MnistNetworkDemo = dynamic(() => import("./MnistNetworkDemo"), {
+const MnistNetworkDemo = dynamic(() => import('./MnistNetworkDemo'), {
   ssr: false,
 });
 
@@ -28,7 +28,7 @@ export default function MnistPage() {
         <section className="text-[11px] md:text-xs leading-relaxed text-indigo-100/70 bg-white/5 border border-white/10 rounded-xl p-4">
           <h2 className="text-cyan-200 font-semibold mb-2 text-sm">About</h2>
           <p>
-            This demo uses weights exported from the PyTorch MLP you trained in{" "}
+            This demo uses weights exported from the PyTorch MLP you trained in{' '}
             <code className="px-1 bg-white/10 rounded">
               mnist/mnist_pytorch.py
             </code>
@@ -43,13 +43,13 @@ export default function MnistPage() {
           <ol className="list-decimal pl-4 space-y-1 mt-1">
             <li>Retrain or improve the model (e.g. more epochs or a CNN).</li>
             <li>
-              Run the export script:{" "}
+              Run the export script:{' '}
               <code className="px-1 bg-white/10 rounded">
                 python mnist/export_mnist_weights.py
               </code>
             </li>
             <li>
-              Reload this page (it fetches{" "}
+              Reload this page (it fetches{' '}
               <code className="px-1 bg-white/10 rounded">/mnist_mlp.json</code>
               ).
             </li>

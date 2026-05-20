@@ -1,11 +1,11 @@
-"use client";
+'use client';
 import React, {
   useRef,
   useState,
   useEffect,
   useMemo,
   useCallback,
-} from "react";
+} from 'react';
 
 /*
   MnistNetworkDemo
@@ -69,20 +69,20 @@ const MnistNetworkDemo: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [classic, setClassic] = useState(true); // classic diagram style like shapes screenshot
   const [centerScale, setCenterScale] = useState(true); // MNIST-like preprocess (crop, scale to 20x20, center)
-  const [weightMode, setWeightMode] = useState<"sparse" | "medium" | "full">(
-    "sparse"
+  const [weightMode, setWeightMode] = useState<'sparse' | 'medium' | 'full'>(
+    'sparse',
   ); // control number of weight lines
   // ReLU line filtering always enabled automatically (removed user toggle)
   const reluLines = true; // apply ReLU to contribution (activation*weight) so negatives vanish
   const [hover, setHover] = useState<{
-    layer: "h1" | "h2" | "out" | null;
+    layer: 'h1' | 'h2' | 'out' | null;
     index: number | null;
   }>({ layer: null, index: null });
   const [lineHover, setLineHover] = useState<string | null>(null); // id of currently hovered line
-  const isOutputHover = hover.layer === "out" && hover.index != null;
+  const isOutputHover = hover.layer === 'out' && hover.index != null;
   const reloadWeights = () => {
     setLoading(true);
-    fetch("/mnist_mlp.json?cacheBust=" + Date.now())
+    fetch('/mnist_mlp.json?cacheBust=' + Date.now())
       .then((r) => r.json())
       .then((j: ModelPayload) => {
         setModel(j);
@@ -92,7 +92,7 @@ const MnistNetworkDemo: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch("/mnist_mlp.json")
+    fetch('/mnist_mlp.json')
       .then((r) => r.json())
       .then((j: ModelPayload) => {
         setModel(j);
@@ -104,7 +104,7 @@ const MnistNetworkDemo: React.FC = () => {
   const clear = () => {
     const c = canvasRef.current;
     if (!c) return;
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     setRaw(Array(GRID * GRID).fill(0));
@@ -115,9 +115,9 @@ const MnistNetworkDemo: React.FC = () => {
 
   const BRUSH = 12; // px radius on canvas
   const drawDot = (x: number, y: number) => {
-    const ctx = canvasRef.current?.getContext("2d");
+    const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.arc(x, y, BRUSH, 0, Math.PI * 2);
     ctx.fill();
@@ -196,8 +196,8 @@ const MnistNetworkDemo: React.FC = () => {
   };
   const up = () => setIsDown(false);
   useEffect(() => {
-    window.addEventListener("pointerup", up);
-    return () => window.removeEventListener("pointerup", up);
+    window.addEventListener('pointerup', up);
+    return () => window.removeEventListener('pointerup', up);
   }, []);
 
   const runInference = useCallback(() => {
@@ -281,15 +281,15 @@ const MnistNetworkDemo: React.FC = () => {
     const norm = vec.map((v) => (v - mean) / std);
     const [L1, L2, L3] = model.layers;
     const z1 = L1.W.map((row, i) =>
-      row.reduce((a, w, j) => a + w * norm[j], L1.b[i])
+      row.reduce((a, w, j) => a + w * norm[j], L1.b[i]),
     );
     const a1 = z1.map(relu);
     const z2 = L2.W.map((row, i) =>
-      row.reduce((a, w, j) => a + w * a1[j], L2.b[i])
+      row.reduce((a, w, j) => a + w * a1[j], L2.b[i]),
     );
     const a2 = z2.map(relu);
     const logits = L3.W.map((row, i) =>
-      row.reduce((a, w, j) => a + w * a2[j], L3.b[i])
+      row.reduce((a, w, j) => a + w * a2[j], L3.b[i]),
     );
     const probsLocal = softmax(logits);
     setH1(a1.slice(0, H1_SHOW));
@@ -327,15 +327,15 @@ const MnistNetworkDemo: React.FC = () => {
         .map((v, i) => ({ i, a: Math.abs(v) }))
         .sort((x, y) => y.a - x.a)
         .slice(0, Math.min(k, arr.length))
-        .map((o) => o.i)
+        .map((o) => o.i),
     );
   }, []);
 
   const modeConfig = useMemo(() => {
     switch (weightMode) {
-      case "sparse":
+      case 'sparse':
         return { inTop: 12, h1h2Top: 4, h2outTop: 4 };
-      case "medium":
+      case 'medium':
         return { inTop: 30, h1h2Top: 8, h2outTop: 8 };
       default:
         return { inTop: Infinity, h1h2Top: Infinity, h2outTop: Infinity };
@@ -445,7 +445,7 @@ const MnistNetworkDemo: React.FC = () => {
         .map((v, i) => ({ v: Math.abs(v), i }))
         .sort((a, b) => b.v - a.v)
         .slice(0, Math.min(6, h2Count))
-        .map((o) => o.i)
+        .map((o) => o.i),
     );
     const keepH1 = new Set<number>();
     keepH2.forEach((h2i) => {
@@ -467,8 +467,8 @@ const MnistNetworkDemo: React.FC = () => {
   }, []);
   // Attach pointerup listener once
   useEffect(() => {
-    window.addEventListener("pointerup", handlePointerUp);
-    return () => window.removeEventListener("pointerup", handlePointerUp);
+    window.addEventListener('pointerup', handlePointerUp);
+    return () => window.removeEventListener('pointerup', handlePointerUp);
   }, [handlePointerUp]);
 
   return (
@@ -498,7 +498,7 @@ const MnistNetworkDemo: React.FC = () => {
             className="accent-cyan-400"
             checked={showWeights}
             onChange={(e) => setShowWeights(e.target.checked)}
-          />{" "}
+          />{' '}
           Weights
         </label>
         <label className="flex items-center gap-1 text-[11px] cursor-pointer select-none">
@@ -510,7 +510,7 @@ const MnistNetworkDemo: React.FC = () => {
             className="accent-cyan-400"
             checked={showActs}
             onChange={(e) => setShowActs(e.target.checked)}
-          />{" "}
+          />{' '}
           Activations
         </label>
         <label className="flex items-center gap-1 text-[11px] cursor-pointer select-none">
@@ -519,7 +519,7 @@ const MnistNetworkDemo: React.FC = () => {
             className="accent-cyan-400"
             checked={centerScale}
             onChange={(e) => setCenterScale(e.target.checked)}
-          />{" "}
+          />{' '}
           Center & Scale
         </label>
         <div className="flex items-center gap-1 text-[11px]">
@@ -527,7 +527,7 @@ const MnistNetworkDemo: React.FC = () => {
           <select
             value={weightMode}
             onChange={(e) =>
-              setWeightMode(e.target.value as "sparse" | "medium" | "full")
+              setWeightMode(e.target.value as 'sparse' | 'medium' | 'full')
             }
             className="bg-white/10 border border-white/15 rounded px-2 py-[2px] text-[11px] outline-none hover:bg-white/15"
           >
@@ -542,7 +542,7 @@ const MnistNetworkDemo: React.FC = () => {
             className="accent-cyan-400"
             checked={classic}
             onChange={(e) => setClassic(e.target.checked)}
-          />{" "}
+          />{' '}
           Classic Diagram
         </label>
         {loading && (
@@ -649,11 +649,11 @@ const MnistNetworkDemo: React.FC = () => {
                     const arcR = r + 4;
                     const circ = 2 * Math.PI * arcR;
                     const dash = frac * circ;
-                    const arcColor = contrib >= 0 ? "#34d399" : "#f472b6";
+                    const arcColor = contrib >= 0 ? '#34d399' : '#f472b6';
                     return (
                       <g
                         key={`h1-${i}`}
-                        onMouseEnter={() => setHover({ layer: "h1", index: i })}
+                        onMouseEnter={() => setHover({ layer: 'h1', index: i })}
                         onMouseLeave={() =>
                           setHover({ layer: null, index: null })
                         }
@@ -678,7 +678,7 @@ const MnistNetworkDemo: React.FC = () => {
                             strokeLinecap="round"
                             transform={`rotate(-90 ${x} ${y})`}
                             style={{
-                              transition: "stroke-dasharray 0.3s, stroke 0.3s",
+                              transition: 'stroke-dasharray 0.3s, stroke 0.3s',
                             }}
                             opacity={0.9}
                           />
@@ -694,7 +694,7 @@ const MnistNetworkDemo: React.FC = () => {
                   const maxAbsC2 = c2
                     ? Math.max(
                         1e-6,
-                        ...used.map((_, i) => Math.abs(c2[i] || 0))
+                        ...used.map((_, i) => Math.abs(c2[i] || 0)),
                       )
                     : 1;
                   return used.map((a, i) => {
@@ -710,11 +710,11 @@ const MnistNetworkDemo: React.FC = () => {
                     const arcR = r + 4;
                     const circ = 2 * Math.PI * arcR;
                     const dash = frac * circ;
-                    const arcColor = contrib >= 0 ? "#10b981" : "#fb7185";
+                    const arcColor = contrib >= 0 ? '#10b981' : '#fb7185';
                     return (
                       <g
                         key={`h2-${i}`}
-                        onMouseEnter={() => setHover({ layer: "h2", index: i })}
+                        onMouseEnter={() => setHover({ layer: 'h2', index: i })}
                         onMouseLeave={() =>
                           setHover({ layer: null, index: null })
                         }
@@ -739,7 +739,7 @@ const MnistNetworkDemo: React.FC = () => {
                             strokeLinecap="round"
                             transform={`rotate(-90 ${x} ${y})`}
                             style={{
-                              transition: "stroke-dasharray 0.3s, stroke 0.3s",
+                              transition: 'stroke-dasharray 0.3s, stroke 0.3s',
                             }}
                             opacity={0.92}
                           />
@@ -758,7 +758,7 @@ const MnistNetworkDemo: React.FC = () => {
                   return (
                     <g
                       key={`out-${i}`}
-                      onMouseEnter={() => setHover({ layer: "out", index: i })}
+                      onMouseEnter={() => setHover({ layer: 'out', index: i })}
                       onMouseLeave={() =>
                         setHover({ layer: null, index: null })
                       }
@@ -769,8 +769,8 @@ const MnistNetworkDemo: React.FC = () => {
                         width={48}
                         height={48}
                         rx={10}
-                        fill={highlight ? "#06b6d4" : "#1e293b"}
-                        stroke={"#06b6d4"}
+                        fill={highlight ? '#06b6d4' : '#1e293b'}
+                        stroke={'#06b6d4'}
                         strokeWidth={highlight ? 3 : 1.6}
                       />
                       <text
@@ -779,7 +779,7 @@ const MnistNetworkDemo: React.FC = () => {
                         fontSize={20}
                         textAnchor="middle"
                         fontFamily="monospace"
-                        fill={highlight ? "#0f172a" : "#06b6d4"}
+                        fill={highlight ? '#0f172a' : '#06b6d4'}
                       >
                         {i}
                       </text>
@@ -809,7 +809,7 @@ const MnistNetworkDemo: React.FC = () => {
                       contrib = contrib.map((v) => (v < 0 ? 0 : v));
                     const maxAbsContrib = Math.max(
                       1e-6,
-                      ...contrib.map((v) => Math.abs(v))
+                      ...contrib.map((v) => Math.abs(v)),
                     );
                     const keep = topK(contrib, modeConfig.inTop);
                     const targetY =
@@ -828,13 +828,13 @@ const MnistNetworkDemo: React.FC = () => {
                         Math.abs(dyn),
                         maxAbsContrib,
                         0.18,
-                        2.4
+                        2.4,
                       );
-                      const color = "#06b6d4";
+                      const color = '#06b6d4';
                       let op = 0.1 + (Math.abs(dyn) / maxAbsContrib) * 0.65;
                       const onPath = isOutputHover && hoverPath?.keepH1.has(i);
                       const dim =
-                        hover.layer && hover.layer !== "h1" && !onPath;
+                        hover.layer && hover.layer !== 'h1' && !onPath;
                       if (dim) op *= 0.15;
                       let adjWidth = width;
                       if (!reluLines && dyn < 0) {
@@ -856,7 +856,7 @@ const MnistNetworkDemo: React.FC = () => {
                           stroke={color}
                           strokeWidth={
                             adjWidth *
-                            ((hover.layer === "h1" && hover.index === i) ||
+                            ((hover.layer === 'h1' && hover.index === i) ||
                             onPath ||
                             hovered
                               ? 1.55
@@ -867,7 +867,7 @@ const MnistNetworkDemo: React.FC = () => {
                           }
                           style={{
                             transition:
-                              "stroke-opacity .15s, stroke-width .15s",
+                              'stroke-opacity .15s, stroke-width .15s',
                           }}
                           onMouseEnter={() => setLineHover(id)}
                           onMouseLeave={() => setLineHover(null)}
@@ -885,7 +885,7 @@ const MnistNetworkDemo: React.FC = () => {
                         contrib = contrib.map((v) => (v < 0 ? 0 : v));
                       const maxAbsContrib = Math.max(
                         1e-6,
-                        ...contrib.map((v) => Math.abs(v))
+                        ...contrib.map((v) => Math.abs(v)),
                       );
                       const keep = topK(contrib, modeConfig.h1h2Top);
                       return row.slice(0, weightMeta.h1Count).map((w, i) => {
@@ -902,14 +902,14 @@ const MnistNetworkDemo: React.FC = () => {
                           Math.abs(dyn),
                           maxAbsContrib,
                           0.25,
-                          2.6
+                          2.6,
                         );
-                        const color = "#06b6d4";
+                        const color = '#06b6d4';
                         let op = 0.14 + (Math.abs(dyn) / maxAbsContrib) * 0.6;
                         const dim =
                           hover.layer &&
-                          hover.layer !== "h1" &&
-                          hover.layer !== "h2" &&
+                          hover.layer !== 'h1' &&
+                          hover.layer !== 'h2' &&
                           !(
                             isOutputHover &&
                             hoverPath?.keepH1.has(i) &&
@@ -935,8 +935,8 @@ const MnistNetworkDemo: React.FC = () => {
                             stroke={color}
                             strokeWidth={
                               adjWidth *
-                              ((hover.layer === "h1" && hover.index === i) ||
-                              (hover.layer === "h2" && hover.index === j) ||
+                              ((hover.layer === 'h1' && hover.index === i) ||
+                              (hover.layer === 'h2' && hover.index === j) ||
                               hovered
                                 ? 1.5
                                 : 1)
@@ -944,14 +944,14 @@ const MnistNetworkDemo: React.FC = () => {
                             strokeOpacity={op * (hovered ? 1.35 : 1)}
                             style={{
                               transition:
-                                "stroke-opacity .15s, stroke-width .15s",
+                                'stroke-opacity .15s, stroke-width .15s',
                             }}
                             onMouseEnter={() => setLineHover(id)}
                             onMouseLeave={() => setLineHover(null)}
                           />
                         );
                       });
-                    }
+                    },
                   )}
                   {/* H2->Output dynamic lines */}
                   {model &&
@@ -963,11 +963,11 @@ const MnistNetworkDemo: React.FC = () => {
                       const predictedIdx = probs.indexOf(Math.max(...probs));
                       const outTop = isOutputHover
                         ? Infinity
-                        : weightMode === "sparse"
-                        ? 2
-                        : weightMode === "medium"
-                        ? 4
-                        : 8;
+                        : weightMode === 'sparse'
+                          ? 2
+                          : weightMode === 'medium'
+                            ? 4
+                            : 8;
                       return outW.map((row, outIdx) => {
                         if (
                           isOutputHover &&
@@ -981,7 +981,7 @@ const MnistNetworkDemo: React.FC = () => {
                           contrib = contrib.map((v) => (v < 0 ? 0 : v));
                         const maxAbs = Math.max(
                           1e-6,
-                          ...contrib.map((v) => Math.abs(v))
+                          ...contrib.map((v) => Math.abs(v)),
                         );
                         const keep = topK(contrib, outTop);
                         return contrib.map((val, i) => {
@@ -1002,14 +1002,14 @@ const MnistNetworkDemo: React.FC = () => {
                             Math.abs(val),
                             maxAbs,
                             0.4,
-                            3.2
+                            3.2,
                           );
                           if (
                             outIdx === predictedIdx ||
                             (isOutputHover && hover.index === outIdx)
                           )
                             width *= 1.9;
-                          const color = "#06b6d4";
+                          const color = '#06b6d4';
                           const opBase = 0.16 + (Math.abs(val) / maxAbs) * 0.55;
                           let op =
                             outIdx === predictedIdx ||
@@ -1019,8 +1019,8 @@ const MnistNetworkDemo: React.FC = () => {
                           const dim =
                             hover.layer &&
                             !(
-                              (hover.layer === "h2" && hover.index === i) ||
-                              (hover.layer === "out" &&
+                              (hover.layer === 'h2' && hover.index === i) ||
+                              (hover.layer === 'out' &&
                                 hover.index === outIdx) ||
                               (isOutputHover &&
                                 hoverPath?.keepH2.has(i) &&
@@ -1051,8 +1051,8 @@ const MnistNetworkDemo: React.FC = () => {
                               stroke={color}
                               strokeWidth={
                                 width *
-                                ((hover.layer === "h2" && hover.index === i) ||
-                                (hover.layer === "out" &&
+                                ((hover.layer === 'h2' && hover.index === i) ||
+                                (hover.layer === 'out' &&
                                   hover.index === outIdx) ||
                                 hovered
                                   ? 1.55
@@ -1061,11 +1061,11 @@ const MnistNetworkDemo: React.FC = () => {
                               strokeOpacity={op * (hovered ? 1.35 : 1)}
                               style={{
                                 transition:
-                                  "stroke-opacity .15s, stroke-width .15s",
+                                  'stroke-opacity .15s, stroke-width .15s',
                               }}
                               filter={
                                 outIdx === predictedIdx
-                                  ? "url(#glow)"
+                                  ? 'url(#glow)'
                                   : undefined
                               }
                               onMouseEnter={() => setLineHover(id)}
@@ -1118,7 +1118,7 @@ const MnistNetworkDemo: React.FC = () => {
                       width={56}
                       height={56}
                       rx={8}
-                      fill={active ? "#000" : "#f8fafc"}
+                      fill={active ? '#000' : '#f8fafc'}
                       stroke="#111827"
                       strokeWidth={2}
                     />
@@ -1128,7 +1128,7 @@ const MnistNetworkDemo: React.FC = () => {
                       fontSize={28}
                       fontWeight={600}
                       textAnchor="middle"
-                      fill={active ? "#ffffff" : "#111827"}
+                      fill={active ? '#ffffff' : '#111827'}
                       fontFamily="monospace"
                     >
                       {i}
@@ -1161,7 +1161,7 @@ const MnistNetworkDemo: React.FC = () => {
                   const frac = Math.min(1, Math.abs(contrib) / maxAbsC1);
                   const barH = 36 * frac;
                   const barY = y - 18 + (36 - barH);
-                  const barColor = contrib >= 0 ? "#34d399" : "#f472b6";
+                  const barColor = contrib >= 0 ? '#34d399' : '#f472b6';
                   return (
                     <g key={`c-h1-${i}`}>
                       <rect
@@ -1183,7 +1183,7 @@ const MnistNetworkDemo: React.FC = () => {
                           rx={4}
                           fill={barColor}
                           fillOpacity={0.55}
-                          style={{ transition: "y 0.28s, height 0.28s" }}
+                          style={{ transition: 'y 0.28s, height 0.28s' }}
                         />
                       )}
                     </g>
@@ -1203,7 +1203,7 @@ const MnistNetworkDemo: React.FC = () => {
                   const frac = Math.min(1, Math.abs(contrib) / maxAbsC2);
                   const barH = 40 * frac;
                   const barY = y - 20 + (40 - barH);
-                  const barColor = contrib >= 0 ? "#10b981" : "#fb7185";
+                  const barColor = contrib >= 0 ? '#10b981' : '#fb7185';
                   return (
                     <g key={`c-h2-${i}`}>
                       <rect
@@ -1225,7 +1225,7 @@ const MnistNetworkDemo: React.FC = () => {
                           rx={5}
                           fill={barColor}
                           fillOpacity={0.55}
-                          style={{ transition: "y 0.28s, height 0.28s" }}
+                          style={{ transition: 'y 0.28s, height 0.28s' }}
                         />
                       )}
                     </g>
@@ -1248,7 +1248,7 @@ const MnistNetworkDemo: React.FC = () => {
                         .map((w, idx) => (h1[idx] || 0) * w);
                       const maxAbsContrib = Math.max(
                         1e-6,
-                        ...contribVals.map((v) => Math.abs(v))
+                        ...contribVals.map((v) => Math.abs(v)),
                       );
                       const keep = topK(contribVals, CLASSIC_H1H2_TOP);
                       return row.slice(0, h1.length).map((w, h1i) => {
@@ -1264,7 +1264,7 @@ const MnistNetworkDemo: React.FC = () => {
                         const h2y = 330;
                         const dyn = contribVals[h1i];
                         const width = safeWidth(dyn, maxAbsContrib, 0.6, 3.4);
-                        const color = dyn >= 0 ? "#16a34a" : "#9333ea";
+                        const color = dyn >= 0 ? '#16a34a' : '#9333ea';
                         const op =
                           0.18 + Math.min(0.8, Math.abs(dyn) / maxAbsContrib);
                         return (
@@ -1280,7 +1280,7 @@ const MnistNetworkDemo: React.FC = () => {
                           />
                         );
                       });
-                    }
+                    },
                   )}
                   {/* Hidden1 -> Outputs (effective weights aggregated through Hidden2) */}
                   {(() => {
@@ -1307,11 +1307,11 @@ const MnistNetworkDemo: React.FC = () => {
                     });
                     // incorporate current activation for dynamic contributions
                     const dynEff = effective.map((row) =>
-                      row.map((wEff, i) => wEff * (h1[i] || 0))
+                      row.map((wEff, i) => wEff * (h1[i] || 0)),
                     );
                     const maxAbsDynEff = Math.max(
                       1e-6,
-                      ...dynEff.flat().map((v) => Math.abs(v))
+                      ...dynEff.flat().map((v) => Math.abs(v)),
                     );
                     return dynEff.map((row, outIdx) => {
                       const keep = topK(row, CLASSIC_H1OUT_TOP);
@@ -1324,7 +1324,7 @@ const MnistNetworkDemo: React.FC = () => {
                         const h1y = 200 - 18; // top center of hidden1 rect (moderate layout)
                         let width = safeWidth(dynVal, maxAbsDynEff, 0.5, 3.2);
                         if (outIdx === predictedIdx) width *= 2.2; // emphasize current prediction pathway
-                        const color = dynVal >= 0 ? "#16a34a" : "#9333ea";
+                        const color = dynVal >= 0 ? '#16a34a' : '#9333ea';
                         const opBase =
                           0.2 + Math.min(0.65, Math.abs(dynVal) / maxAbsDynEff);
                         const op =

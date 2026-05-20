@@ -1,6 +1,6 @@
-"use client";
-import React, { useState, useRef } from "react";
-import Link from "next/link";
+'use client';
+import React, { useState, useRef } from 'react';
+import Link from 'next/link';
 
 /*
   Linear Models Playground
@@ -74,7 +74,7 @@ const BestFitActivity: React.FC = () => {
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const y = 1 - ((e.clientY - rect.top) / rect.height) * 2;
     setPoints((pts: Point[]) =>
-      pts.map((p: Point, i: number) => (i === dragIdx ? { x, y } : p))
+      pts.map((p: Point, i: number) => (i === dragIdx ? { x, y } : p)),
     );
   }
 
@@ -115,7 +115,7 @@ const BestFitActivity: React.FC = () => {
             fill="#fbbf24"
             stroke="#fff"
             strokeWidth={dragIdx === i ? 3 : 1}
-            style={{ cursor: "grab" }}
+            style={{ cursor: 'grab' }}
             onPointerDown={() => handlePointerDown(i)}
           />
         ))}
@@ -139,7 +139,7 @@ const BestFitActivity: React.FC = () => {
         })()}
       </svg>
       <div className="mt-2 text-[12px] text-indigo-200/80">
-        Current line:{" "}
+        Current line:{' '}
         <span className="text-cyan-200">
           y = {m.toFixed(2)}x + {b.toFixed(2)}
         </span>
@@ -153,10 +153,10 @@ const ClassifyActivity: React.FC = () => {
   // Two groups: apples (red circles), bananas (yellow rectangles)
   const [lineX, setLineX] = useState(0.0); // vertical line position
   const items = [
-    { x: -0.7, y: 0.3, type: "apple" },
-    { x: -0.5, y: -0.2, type: "apple" },
-    { x: 0.5, y: 0.2, type: "banana" },
-    { x: 0.7, y: -0.3, type: "banana" },
+    { x: -0.7, y: 0.3, type: 'apple' },
+    { x: -0.5, y: -0.2, type: 'apple' },
+    { x: 0.5, y: 0.2, type: 'banana' },
+    { x: 0.7, y: -0.3, type: 'banana' },
   ];
   const toX = (x: number) => 40 + ((x + 1) / 2) * 320;
   const toY = (y: number) => 200 - ((y + 1) / 2) * 160;
@@ -193,7 +193,7 @@ const ClassifyActivity: React.FC = () => {
         <line x1={40} y1={40} x2={40} y2={200} stroke="#fff2" strokeWidth={1} />
         {/* Items */}
         {items.map((item, i) =>
-          item.type === "apple" ? (
+          item.type === 'apple' ? (
             <circle
               key={i}
               cx={toX(item.x)}
@@ -215,7 +215,7 @@ const ClassifyActivity: React.FC = () => {
               stroke="#fff"
               strokeWidth={2}
             />
-          )
+          ),
         )}
         {/* Decision boundary line */}
         <line
@@ -261,7 +261,7 @@ const LinearModelDemo: React.FC = () => {
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const y = 1 - ((e.clientY - rect.top) / rect.height) * 2;
     setPoints((pts: Point[]) =>
-      pts.map((p: Point, i: number) => (i === dragIdx ? { x, y } : p))
+      pts.map((p: Point, i: number) => (i === dragIdx ? { x, y } : p)),
     );
   }
 
@@ -316,7 +316,7 @@ const LinearModelDemo: React.FC = () => {
               fill="#fbbf24"
               stroke="#fff"
               strokeWidth={dragIdx === i ? 4 : 2}
-              style={{ cursor: "grab" }}
+              style={{ cursor: 'grab' }}
               onPointerDown={() => handlePointerDown(i)}
             />
           ))}
@@ -381,127 +381,127 @@ const LinearModelDemo: React.FC = () => {
 const MODULES: ModuleItem[] = [
   {
     id: 1,
-    title: "Introduction to AI",
+    title: 'Introduction to AI',
     bullets: [
-      "What is AI? (Siri, YouTube, game opponents)",
-      "AI in daily life: games, chatbots, cars",
-      "Human vs machine intelligence",
+      'What is AI? (Siri, YouTube, game opponents)',
+      'AI in daily life: games, chatbots, cars',
+      'Human vs machine intelligence',
     ],
-    activity: "Spot AI around you – list examples on a board.",
-    theme: "cyan",
+    activity: 'Spot AI around you – list examples on a board.',
+    theme: 'cyan',
     notes: [
-      "AI stands for Artificial Intelligence.",
-      "Computers learn from lots of examples and use patterns to make guesses.",
-      "AI helps people by suggesting, sorting, or answering questions.",
-      "It is not magic or a person—it’s a smart tool that finds patterns in data.",
+      'AI stands for Artificial Intelligence.',
+      'Computers learn from lots of examples and use patterns to make guesses.',
+      'AI helps people by suggesting, sorting, or answering questions.',
+      'It is not magic or a person—it’s a smart tool that finds patterns in data.',
     ],
   },
   {
     id: 2,
-    title: "Machines & Learning",
+    title: 'Machines & Learning',
     bullets: [
-      "Computers follow instructions (algorithms)",
+      'Computers follow instructions (algorithms)',
       "What does 'learning' mean?",
-      "Data is food for AI",
+      'Data is food for AI',
     ],
-    activity: "Compare a calculator to an AI guessing game.",
-    theme: "emerald",
+    activity: 'Compare a calculator to an AI guessing game.',
+    theme: 'emerald',
     notes: [
-      "Machines learn by changing their answers when they make mistakes.",
-      "Learning from feedback means trying again and improving each time.",
-      "More good examples help computers make smarter guesses.",
+      'Machines learn by changing their answers when they make mistakes.',
+      'Learning from feedback means trying again and improving each time.',
+      'More good examples help computers make smarter guesses.',
     ],
   },
   {
     id: 3,
-    title: "Linear Thinking",
+    title: 'Linear Thinking',
     bullets: [
-      "What does linear mean?",
-      "Cause & effect (rain → umbrella)",
-      "Rules vs learning",
+      'What does linear mean?',
+      'Cause & effect (rain → umbrella)',
+      'Rules vs learning',
     ],
-    activity: "Build an if–then decision tree chatbot.",
-    theme: "pink",
+    activity: 'Build an if–then decision tree chatbot.',
+    theme: 'pink',
     notes: [
-      "Linear means changing in a straight, steady way.",
-      "Growing taller by the same amount each year is a linear change.",
-      "Computers use linear models to find simple rules and make predictions.",
+      'Linear means changing in a straight, steady way.',
+      'Growing taller by the same amount each year is a linear change.',
+      'Computers use linear models to find simple rules and make predictions.',
     ],
   },
   {
     id: 4,
-    title: "Line of Best Fit",
+    title: 'Line of Best Fit',
     bullets: [
-      "Numbers & patterns",
-      "Line through dots (best fit)",
-      "Predict new values",
+      'Numbers & patterns',
+      'Line through dots (best fit)',
+      'Predict new values',
     ],
-    activity: "Plot points & draw a prediction line.",
-    theme: "indigo",
+    activity: 'Plot points & draw a prediction line.',
+    theme: 'indigo',
     notes: [
-      "A line of best fit is a straight line that goes close to many points on a graph.",
-      "It helps us see patterns and make predictions about the future.",
-      "For example, it can show how you’re growing and help guess your height next year.",
+      'A line of best fit is a straight line that goes close to many points on a graph.',
+      'It helps us see patterns and make predictions about the future.',
+      'For example, it can show how you’re growing and help guess your height next year.',
     ],
   },
   {
     id: 5,
-    title: "Linear AI in Action",
+    title: 'Linear AI in Action',
     bullets: [
-      "Spam vs not spam",
-      "Game move scoring",
-      "Lane following (stay centered)",
+      'Spam vs not spam',
+      'Game move scoring',
+      'Lane following (stay centered)',
     ],
-    activity: "Classify fruits: round=apple, long=banana.",
-    theme: "violet",
+    activity: 'Classify fruits: round=apple, long=banana.',
+    theme: 'violet',
     notes: [
-      "Linear AI helps sort things into groups using a line or boundary.",
-      "The computer learns where to put the line to tell things apart.",
-      "It can separate apples from bananas, or spam from not spam in emails.",
+      'Linear AI helps sort things into groups using a line or boundary.',
+      'The computer learns where to put the line to tell things apart.',
+      'It can separate apples from bananas, or spam from not spam in emails.',
     ],
   },
   {
     id: 6,
-    title: "Mini Projects",
+    title: 'Mini Projects',
     bullets: [
-      "Rule-based chatbot",
-      "Study hours → test score predictor",
-      "Cat vs dog sorting",
+      'Rule-based chatbot',
+      'Study hours → test score predictor',
+      'Cat vs dog sorting',
     ],
-    activity: "Quiz: AI or Not AI?",
-    theme: "amber",
+    activity: 'Quiz: AI or Not AI?',
+    theme: 'amber',
     notes: [
-      "Mini projects help you practice what you’ve learned.",
-      "You can build a chatbot or a program that predicts scores from study time.",
-      "More examples make your project better at making predictions.",
+      'Mini projects help you practice what you’ve learned.',
+      'You can build a chatbot or a program that predicts scores from study time.',
+      'More examples make your project better at making predictions.',
     ],
   },
   {
     id: 7,
-    title: "Future & Ethics",
+    title: 'Future & Ethics',
     bullets: [
-      "AI makes mistakes",
-      "Humans bring creativity & values",
-      "Safe & questioning mindset",
+      'AI makes mistakes',
+      'Humans bring creativity & values',
+      'Safe & questioning mindset',
     ],
-    activity: "Debate: Can AI be my friend?",
-    theme: "rose",
+    activity: 'Debate: Can AI be my friend?',
+    theme: 'rose',
     notes: [
-      "AI is a tool that helps people, but it can make mistakes.",
-      "Humans bring creativity and make sure AI is used safely and fairly.",
-      "We need to ask questions and think about how AI affects everyone.",
+      'AI is a tool that helps people, but it can make mistakes.',
+      'Humans bring creativity and make sure AI is used safely and fairly.',
+      'We need to ask questions and think about how AI affects everyone.',
     ],
   },
 ];
 
 const themeRing: Record<string, string> = {
-  cyan: "focus:ring-cyan-400/50 border-cyan-400/30",
-  emerald: "focus:ring-emerald-400/50 border-emerald-400/30",
-  pink: "focus:ring-pink-400/50 border-pink-400/30",
-  indigo: "focus:ring-indigo-400/50 border-indigo-400/30",
-  violet: "focus:ring-violet-400/50 border-violet-400/30",
-  amber: "focus:ring-amber-400/50 border-amber-400/30",
-  rose: "focus:ring-rose-400/50 border-rose-400/30",
+  cyan: 'focus:ring-cyan-400/50 border-cyan-400/30',
+  emerald: 'focus:ring-emerald-400/50 border-emerald-400/30',
+  pink: 'focus:ring-pink-400/50 border-pink-400/30',
+  indigo: 'focus:ring-indigo-400/50 border-indigo-400/30',
+  violet: 'focus:ring-violet-400/50 border-violet-400/30',
+  amber: 'focus:ring-amber-400/50 border-amber-400/30',
+  rose: 'focus:ring-rose-400/50 border-rose-400/30',
 };
 
 const ModuleList: React.FC = () => {
@@ -514,7 +514,7 @@ const ModuleList: React.FC = () => {
           <div
             key={m.id}
             className={`rounded-2xl border bg-white/[0.03] backdrop-blur-xl px-4 md:px-6 py-4 transition-shadow ${
-              themeRing[m.theme] || "border-white/15"
+              themeRing[m.theme] || 'border-white/15'
             } shadow shadow-black/20`}
           >
             <button
@@ -528,13 +528,13 @@ const ModuleList: React.FC = () => {
                 {m.title}
               </span>
               <span className="text-xs text-indigo-200/70 group-hover:text-indigo-100 transition">
-                {open ? "Hide" : "View"}
+                {open ? 'Hide' : 'View'}
               </span>
             </button>
             <div
               className="grid overflow-hidden transition-all"
               style={{
-                gridTemplateRows: open ? "1fr" : "0fr",
+                gridTemplateRows: open ? '1fr' : '0fr',
               }}
             >
               <div className="min-h-0">
@@ -584,7 +584,7 @@ const ModuleList: React.FC = () => {
                       <span>
                         <span className="font-semibold text-cyan-200">
                           Activity:
-                        </span>{" "}
+                        </span>{' '}
                         {m.activity}
                       </span>
                     </div>

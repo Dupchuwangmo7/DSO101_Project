@@ -8,7 +8,13 @@ export type QuestionType =
       tiles: string[];
       answer: string[] | string[][];
     }
-  | { path: string; type: 'drag-show'; prompt: string; tiles: string[]; answer: string }
+  | {
+      path: string;
+      type: 'drag-show';
+      prompt: string;
+      tiles: string[];
+      answer: string;
+    }
   | {
       path: string;
       type: 'drag-pattern';
@@ -16,9 +22,27 @@ export type QuestionType =
       tiles: string[];
       answer: string[];
     }
-  | { path: string; type: 'arrange'; prompt: string; tiles: string[]; answer: string[] }
-  | { path: string; type: 'tap-multi'; prompt: string; tiles: string[]; answer: string[] }
-  | { path: string; type: 'tap-single'; prompt: string; tiles: string[]; answer: string }
+  | {
+      path: string;
+      type: 'arrange';
+      prompt: string;
+      tiles: string[];
+      answer: string[];
+    }
+  | {
+      path: string;
+      type: 'tap-multi';
+      prompt: string;
+      tiles: string[];
+      answer: string[];
+    }
+  | {
+      path: string;
+      type: 'tap-single';
+      prompt: string;
+      tiles: string[];
+      answer: string;
+    }
   | {
       path: string;
       type: 'tap-shape';

@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import Link from "next/link";
-import { Button } from "../../components/ui/button";
+'use client';
+import React from 'react';
+import Link from 'next/link';
+import { Button } from '../../components/ui/button';
 
 /* Learn AI Page now dedicated to an interactive neural network visualization with real weight math. */
 
@@ -11,12 +11,20 @@ export default function LearnAIPage() {
   return (
     <div className="min-h-screen w-full flex flex-col font-quicksand text-white relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_25%,rgba(59,7,100,0.45),rgba(24,26,42,0)_70%)] pointer-events-none" />
-      <nav className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none" style={{ background: "transparent" }}>
+      <nav
+        className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none"
+        style={{ background: 'transparent' }}
+      >
         <div className="flex items-center gap-3">
-          <span className="text-base font-semibold tracking-wide text-white">Learn AI</span>
+          <span className="text-base font-semibold tracking-wide text-white">
+            Learn AI
+          </span>
         </div>
         <Link href="/">
-          <Button size="sm" className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none">
+          <Button
+            size="sm"
+            className="relative rounded-full px-5 py-2 text-sm font-semibold tracking-wide text-white overflow-hidden group focus-visible:outline-none"
+          >
             <span className="absolute inset-0 bg-gradient-to-r from-indigo-600/70 via-cyan-500/70 to-fuchsia-500/70 backdrop-blur-md" />
             <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_60%)]" />
             <span className="relative">Home</span>
@@ -87,7 +95,7 @@ export default function LearnAIPage() {
                         cx={x}
                         cy={y}
                         r={10}
-                        fill={li === 1 ? "url(#g1)" : "url(#g2)"}
+                        fill={li === 1 ? 'url(#g1)' : 'url(#g2)'}
                         fillOpacity={li === 0 ? 0.5 : 0.85}
                         stroke="#ffffff30"
                         strokeWidth={1}
@@ -117,10 +125,10 @@ export default function LearnAIPage() {
                             y1={y1}
                             x2={x2 - 10}
                             y2={y2}
-                            stroke={l === 0 ? "url(#g1)" : "url(#g2)"}
+                            stroke={l === 0 ? 'url(#g1)' : 'url(#g2)'}
                             strokeOpacity={0.4}
                             strokeWidth={1.2}
-                          />
+                          />,
                         );
                       }
                     }

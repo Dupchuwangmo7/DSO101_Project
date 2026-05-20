@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from 'react';
 // Inline SVG diagram replaces external /forward-propa.png image to avoid missing resource errors
-import Link from "next/link";
+import Link from 'next/link';
 
 /* Unit 3: Forward Propagation Interactive Lesson */
 
@@ -11,13 +11,13 @@ interface LayerConfig {
   activation: ActivationType;
 }
 
-type ActivationType = "linear" | "relu" | "sigmoid";
+type ActivationType = 'linear' | 'relu' | 'sigmoid';
 
 function activate(type: ActivationType, x: number): number {
   switch (type) {
-    case "relu":
+    case 'relu':
       return Math.max(0, x);
-    case "sigmoid":
+    case 'sigmoid':
       return 1 / (1 + Math.exp(-x));
     default:
       return x; // linear
@@ -338,20 +338,20 @@ function ForwardDiagram() {
 export default function ForwardPropagationPage() {
   const [inputs, setInputs] = useState<number[]>([0.5, -0.2, 0.9]);
   const [layers, setLayers] = useState<LayerConfig[]>([
-    { neurons: 4, activation: "relu" },
-    { neurons: 3, activation: "sigmoid" },
+    { neurons: 4, activation: 'relu' },
+    { neurons: 3, activation: 'sigmoid' },
   ]);
   // Use deterministic initial weights/biases for SSR
   const [weights, setWeights] = useState<number[][][]>(() => {
     return layers.map((layer, li) => {
       const prevSize = li === 0 ? inputs.length : layers[li - 1].neurons;
       return Array.from({ length: prevSize }, () =>
-        Array.from({ length: layer.neurons }, () => 0.1)
+        Array.from({ length: layer.neurons }, () => 0.1),
       );
     });
   });
   const [biases, setBiases] = useState<number[][]>(
-    layers.map((layer) => Array.from({ length: layer.neurons }, () => 0))
+    layers.map((layer) => Array.from({ length: layer.neurons }, () => 0)),
   );
 
   React.useEffect(() => {
@@ -359,12 +359,12 @@ export default function ForwardPropagationPage() {
       layers.map((layer, li) => {
         const prevSize = li === 0 ? inputs.length : layers[li - 1].neurons;
         return Array.from({ length: prevSize }, () =>
-          Array.from({ length: layer.neurons }, () => 0.1)
+          Array.from({ length: layer.neurons }, () => 0.1),
         );
-      })
+      }),
     );
     setBiases(
-      layers.map((layer) => Array.from({ length: layer.neurons }, () => 0))
+      layers.map((layer) => Array.from({ length: layer.neurons }, () => 0)),
     );
   }, [layers, inputs.length]);
 
@@ -395,18 +395,18 @@ export default function ForwardPropagationPage() {
         return Array.from({ length: prevSize }, () =>
           Array.from(
             { length: layer.neurons },
-            () => +(Math.random() * 1 - 0.5).toFixed(2)
-          )
+            () => +(Math.random() * 1 - 0.5).toFixed(2),
+          ),
         );
-      })
+      }),
     );
     setBiases(
       layers.map((layer) =>
         Array.from(
           { length: layer.neurons },
-          () => +(Math.random() * 0.4 - 0.2).toFixed(2)
-        )
-      )
+          () => +(Math.random() * 0.4 - 0.2).toFixed(2),
+        ),
+      ),
     );
   }
 
@@ -489,7 +489,7 @@ export default function ForwardPropagationPage() {
             </div>
             <div className="mt-4">
               <span className="text-[13px] text-indigo-300/80">
-                Source:{" "}
+                Source:{' '}
                 <a
                   href="https://www.geeksforgeeks.org/deep-learning/what-is-forward-propagation-in-neural-networks/"
                   target="_blank"
@@ -642,8 +642,8 @@ function InputsPanel({
               onChange={(e) =>
                 setInputs((prev) =>
                   prev.map((p, pi) =>
-                    pi === i ? parseFloat(e.target.value) : p
-                  )
+                    pi === i ? parseFloat(e.target.value) : p,
+                  ),
                 )
               }
               className="w-28"
@@ -722,8 +722,10 @@ function Controls({
                 onChange={(e) =>
                   setLayers((prev) =>
                     prev.map((l, i) =>
-                      i === li ? { ...l, neurons: parseInt(e.target.value) } : l
-                    )
+                      i === li
+                        ? { ...l, neurons: parseInt(e.target.value) }
+                        : l,
+                    ),
                   )
                 }
               />
@@ -738,8 +740,8 @@ function Controls({
                     prev.map((l, i) =>
                       i === li
                         ? { ...l, activation: e.target.value as ActivationType }
-                        : l
-                    )
+                        : l,
+                    ),
                   )
                 }
                 className="bg-indigo-900/60 border border-indigo-500/30 rounded px-2 py-1 text-[11px]"
@@ -753,7 +755,7 @@ function Controls({
         ))}
         <button
           onClick={() =>
-            setLayers((prev) => [...prev, { neurons: 3, activation: "relu" }])
+            setLayers((prev) => [...prev, { neurons: 3, activation: 'relu' }])
           }
           className="h-[110px] px-4 rounded-lg border border-dashed border-indigo-400/40 text-indigo-300/70 hover:text-indigo-200 hover:border-indigo-300/70 flex items-center justify-center text-[11px]"
         >
@@ -775,14 +777,14 @@ function Controls({
                 const prevSize =
                   li === 0 ? inputs.length : layers[li - 1].neurons;
                 return Array.from({ length: prevSize }, () =>
-                  Array.from({ length: layer.neurons }, () => 0.1)
+                  Array.from({ length: layer.neurons }, () => 0.1),
                 );
-              })
+              }),
             );
             setBiases(
               layers.map((layer) =>
-                Array.from({ length: layer.neurons }, () => 0)
-              )
+                Array.from({ length: layer.neurons }, () => 0),
+              ),
             );
           }}
           className="px-4 py-1.5 rounded-md text-[11px] bg-pink-500/30 hover:bg-pink-500/40 border border-pink-400/40"
@@ -811,25 +813,25 @@ function NetworkViz({
           <div key={layerIndex} className="flex flex-col items-center gap-4">
             <span className="text-[10px] uppercase tracking-wide text-indigo-300/70">
               {layerIndex === 0
-                ? "Input"
+                ? 'Input'
                 : layerIndex === totalLayers.length - 1
-                ? "Output"
-                : `L${layerIndex}`}
+                  ? 'Output'
+                  : `L${layerIndex}`}
             </span>
             {Array.from({ length: count }).map((_, i) => {
               const value = forward[layerIndex]?.[i];
               const bg =
                 layerIndex === 0
-                  ? "bg-cyan-500/30"
+                  ? 'bg-cyan-500/30'
                   : layerIndex === totalLayers.length - 1
-                  ? "bg-pink-500/30"
-                  : "bg-indigo-500/30";
+                    ? 'bg-pink-500/30'
+                    : 'bg-indigo-500/30';
               return (
                 <div
                   key={i}
                   className={`w-16 h-10 ${bg} rounded-md border border-white/20 flex items-center justify-center text-[11px] font-mono`}
                 >
-                  {value !== undefined ? value.toFixed(2) : "--"}
+                  {value !== undefined ? value.toFixed(2) : '--'}
                 </div>
               );
             })}
@@ -846,15 +848,15 @@ function ActivationLegend() {
   return (
     <div className="flex flex-wrap gap-4 text-[11px] text-indigo-100/70">
       <div className="flex items-center gap-2">
-        <span className="w-3 h-3 rounded bg-indigo-500/60 border border-indigo-300/40" />{" "}
+        <span className="w-3 h-3 rounded bg-indigo-500/60 border border-indigo-300/40" />{' '}
         Hidden Layer Activation Region
       </div>
       <div className="flex items-center gap-2">
-        <span className="w-3 h-3 rounded bg-cyan-500/60 border border-cyan-300/40" />{" "}
+        <span className="w-3 h-3 rounded bg-cyan-500/60 border border-cyan-300/40" />{' '}
         Input Values
       </div>
       <div className="flex items-center gap-2">
-        <span className="w-3 h-3 rounded bg-pink-500/60 border border-pink-300/40" />{" "}
+        <span className="w-3 h-3 rounded bg-pink-500/60 border border-pink-300/40" />{' '}
         Output Layer
       </div>
     </div>

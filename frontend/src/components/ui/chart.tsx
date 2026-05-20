@@ -1,6 +1,6 @@
-"use client";
-import React, { useContext } from "react";
-import { Tooltip } from "recharts";
+'use client';
+import React, { useContext } from 'react';
+import { Tooltip } from 'recharts';
 
 export type ChartConfig = Record<string, { label: string; color: string }>;
 
@@ -41,23 +41,26 @@ type RechartsTooltipProps = {
 };
 
 export function ChartTooltipContent(
-  props: RechartsTooltipProps & { indicator?: "line" | "dot" }
+  props: RechartsTooltipProps & { indicator?: 'line' | 'dot' },
 ) {
   const cfg = useContext(ChartContext);
   const { active, payload, label } = props;
   if (!active || !payload || payload.length === 0) return null;
   const item = payload[0] || {};
-  const seriesKey = (item.dataKey as string) || "value";
-  const color = cfg?.[seriesKey]?.color || (item.color as string) || "#8884d8";
+  const seriesKey = (item.dataKey as string) || 'value';
+  const color = cfg?.[seriesKey]?.color || (item.color as string) || '#8884d8';
   const raw = item.value as number | string | undefined;
-  const value = typeof raw === "number" ? raw : raw ?? undefined;
+  const value = typeof raw === 'number' ? raw : (raw ?? undefined);
   return (
     <div className="rounded-md border bg-white/95 px-3 py-2 text-xs shadow">
       <div className="font-medium text-gray-700 mb-0.5">{label}</div>
       <div className="flex items-center gap-2 text-gray-600">
-        <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+        <span
+          className="inline-block h-2 w-2 rounded-full"
+          style={{ backgroundColor: color }}
+        />
         <span>{cfg?.[seriesKey]?.label || seriesKey}:</span>
-        <span className="font-semibold text-gray-800">{value ?? "-"}</span>
+        <span className="font-semibold text-gray-800">{value ?? '-'}</span>
       </div>
     </div>
   );

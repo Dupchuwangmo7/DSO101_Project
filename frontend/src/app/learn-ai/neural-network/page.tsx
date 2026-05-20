@@ -1,10 +1,10 @@
-"use client";
-import React from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
+'use client';
+import React from 'react';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 // Lazy load the moved demo component (now colocated in this folder)
-const NeuralNetworkDemo = dynamic(() => import("./NeuralNetworkDemo"), {
+const NeuralNetworkDemo = dynamic(() => import('./NeuralNetworkDemo'), {
   ssr: false,
 });
 

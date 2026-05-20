@@ -1,14 +1,14 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   AreaChart,
   Area,
@@ -17,15 +17,15 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { TrendingUp } from "lucide-react";
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+} from 'recharts';
+import { TrendingUp } from 'lucide-react';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function ProfilePage() {
   const [me, setMe] = useState<{ userId: number; username: string } | null>(
-    null
+    null,
   );
   const [profile, setProfile] = useState<{
     firstName?: string | null;
@@ -50,7 +50,7 @@ export default function ProfilePage() {
     { label: string; accuracy: number }[]
   >([]);
   const chartConfig = {
-    accuracy: { label: "Accuracy", color: "#60a5fa" },
+    accuracy: { label: 'Accuracy', color: '#60a5fa' },
   } as const;
 
   useEffect(() => {
@@ -58,10 +58,10 @@ export default function ProfilePage() {
     (async () => {
       try {
         const base =
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+          process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
         const res = await fetch(`${base}/user/me`, {
-          method: "GET",
-          credentials: "include",
+          method: 'GET',
+          credentials: 'include',
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = (await res.json()) as {
@@ -71,14 +71,14 @@ export default function ProfilePage() {
         if (alive) setMe(data);
         if (data) {
           const pRes = await fetch(`${base}/user/profile`, {
-            credentials: "include",
+            credentials: 'include',
           });
           if (pRes.ok) {
             const p = await pRes.json();
             if (alive) setProfile(p);
           }
           const perfRes = await fetch(`${base}/user/performance`, {
-            credentials: "include",
+            credentials: 'include',
           });
           if (perfRes.ok) {
             const { history, totals } = (await perfRes.json()) as {
@@ -96,7 +96,7 @@ export default function ProfilePage() {
           }
         }
       } catch {
-        if (alive) setError("Failed to load user");
+        if (alive) setError('Failed to load user');
       } finally {
         if (alive) setLoading(false);
       }
@@ -111,13 +111,13 @@ export default function ProfilePage() {
     try {
       await fetch(
         `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+          process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
         }/user/logout`,
-        { method: "POST", credentials: "include" }
+        { method: 'POST', credentials: 'include' },
       );
-      window.location.href = "/auth";
+      window.location.href = '/auth';
     } catch {
-      setError("Logout failed");
+      setError('Logout failed');
     }
   };
 
@@ -131,14 +131,14 @@ export default function ProfilePage() {
       try {
         const res = await fetch(
           `${
-            process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+            process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
           }/user/avatar`,
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ imageData }),
-          }
+          },
         );
         if (res.ok) {
           const { avatarUrl } = await res.json();
@@ -159,30 +159,33 @@ export default function ProfilePage() {
       <div
         className="font-quicksand min-h-screen flex flex-col transition-colors duration-500"
         style={{
-          background: "transparent",
-          position: "relative",
-          overflow: "hidden",
+          background: 'transparent',
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
         {/* Nebula/star field overlay */}
         <div
           style={{
-            pointerEvents: "none",
-            position: "absolute",
+            pointerEvents: 'none',
+            position: 'absolute',
             inset: 0,
             zIndex: 1,
             background:
-              "radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)",
+              'radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)',
           }}
         />
 
         <nav
           className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none"
-          style={{ background: "transparent" }}
+          style={{ background: 'transparent' }}
         >
           <div className="flex items-center gap-3">
             <span className="text-2xl select-none">🦉</span>
-            <Link href="/" className="text-base font-semibold text-white tracking-wide">
+            <Link
+              href="/"
+              className="text-base font-semibold text-white tracking-wide"
+            >
               Math Quest
             </Link>
           </div>
@@ -223,14 +226,14 @@ export default function ProfilePage() {
                           profile?.avatarUrl
                             ? `${
                                 process.env.NEXT_PUBLIC_BACKEND_URL ||
-                                "http://localhost:3001"
+                                'http://localhost:3001'
                               }${profile?.avatarUrl}`
                             : undefined
                         }
-                        alt={me?.username || "avatar"}
+                        alt={me?.username || 'avatar'}
                       />
                       <AvatarFallback>
-                        {me?.username?.[0]?.toUpperCase() || "U"}
+                        {me?.username?.[0]?.toUpperCase() || 'U'}
                       </AvatarFallback>
                     </Avatar>
                     <div>
@@ -238,7 +241,7 @@ export default function ProfilePage() {
                         {profile?.firstName || me?.username}
                       </div>
                       <div className="text-sm text-gray-500">
-                        {profile?.email || ""}
+                        {profile?.email || ''}
                       </div>
                     </div>
                   </div>
@@ -268,11 +271,11 @@ export default function ProfilePage() {
                         <span className="font-medium">
                           {[profile?.firstName, profile?.lastName]
                             .filter(Boolean)
-                            .join(" ")}
+                            .join(' ')}
                         </span>
                       </div>
                     )}
-                    {typeof profile?.age === "number" && (
+                    {typeof profile?.age === 'number' && (
                       <div className="flex justify-between">
                         <span className="text-gray-500">Age</span>
                         <span className="font-medium">{profile?.age}</span>
@@ -283,7 +286,7 @@ export default function ProfilePage() {
                         <div className="flex justify-between">
                           <span className="text-gray-500">Subjects</span>
                           <span className="font-medium text-right">
-                            {profile.favouriteSubjects.join(", ")}
+                            {profile.favouriteSubjects.join(', ')}
                           </span>
                         </div>
                       )}
@@ -291,7 +294,7 @@ export default function ProfilePage() {
                       <div className="flex justify-between">
                         <span className="text-gray-500">Hobbies</span>
                         <span className="font-medium text-right">
-                          {profile.hobbies.join(", ")}
+                          {profile.hobbies.join(', ')}
                         </span>
                       </div>
                     )}
@@ -375,7 +378,7 @@ export default function ProfilePage() {
                     <div className="mt-1 text-xs text-gray-500">
                       {chartData.length > 0
                         ? `Accuracy over last ${chartData.length} sessions`
-                        : "No performance data yet"}
+                        : 'No performance data yet'}
                     </div>
                   </div>
                   {/* KPI tiles */}
@@ -402,7 +405,7 @@ export default function ProfilePage() {
                   <div className="flex w-full items-start gap-2 text-sm">
                     <div className="grid gap-2">
                       <div className="flex items-center gap-2 leading-none font-medium">
-                        Trending up by 5.2% this week{" "}
+                        Trending up by 5.2% this week{' '}
                         <TrendingUp className="h-4 w-4" />
                       </div>
                       <div className="text-muted-foreground flex items-center gap-2 leading-none">

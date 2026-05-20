@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
-import { Logo } from "./logo";
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Button } from './ui/button';
+import { Logo } from './logo';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:3001";
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:3001';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export function Navbar() {
   const clickAudioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    fetch(`${BACKEND}/user/me`, { credentials: "include" })
+    fetch(`${BACKEND}/user/me`, { credentials: 'include' })
       .then((r) => setIsAuthed(r.ok))
       .catch(() => setIsAuthed(false));
   }, []);
@@ -36,8 +36,8 @@ export function Navbar() {
         tickingRef.current = false;
       });
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const playClick = () => {
@@ -47,16 +47,21 @@ export function Navbar() {
     }
   };
 
-  if (pathname === "/auth" || pathname?.startsWith("/auth/")) return null;
+  if (pathname === '/auth' || pathname?.startsWith('/auth/')) return null;
 
   return (
     <>
-      <audio ref={clickAudioRef} src="/button-click.mp3" preload="auto" style={{ display: "none" }} />
+      <audio
+        ref={clickAudioRef}
+        src="/button-click.mp3"
+        preload="auto"
+        style={{ display: 'none' }}
+      />
       <nav
         className={`fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none transition-transform duration-300 ease-out ${
-          hideNav ? "-translate-y-full" : "translate-y-0"
+          hideNav ? '-translate-y-full' : 'translate-y-0'
         }`}
-        style={{ background: "transparent" }}
+        style={{ background: 'transparent' }}
       >
         <Logo />
         {isAuthed ? (

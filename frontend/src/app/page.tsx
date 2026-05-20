@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { Button } from "../components/ui/button";
-import { Logo } from "../components/logo";
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '../components/ui/button';
+import { Logo } from '../components/logo';
 
 export default function Home() {
   const clickAudioRef = useRef<HTMLAudioElement>(null);
@@ -15,8 +15,8 @@ export default function Home() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:3001/user/me", {
-          credentials: "include",
+        const res = await fetch('http://localhost:3001/user/me', {
+          credentials: 'include',
         });
         setIsAuthed(res.ok);
       } catch {
@@ -44,8 +44,8 @@ export default function Home() {
         tickingRef.current = false;
       });
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const playClick = () => {
@@ -61,26 +61,31 @@ export default function Home() {
         ref={clickAudioRef}
         src="/button-click.mp3"
         preload="auto"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
       />
       <div
         className="font-quicksand min-h-screen flex flex-col transition-colors duration-500"
-        style={{ background: "transparent", position: "relative", overflow: "hidden" }}
+        style={{
+          background: 'transparent',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
       >
         <div
           style={{
-            pointerEvents: "none",
-            position: "absolute",
+            pointerEvents: 'none',
+            position: 'absolute',
             inset: 0,
             zIndex: 1,
-            background: "radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)",
+            background:
+              'radial-gradient(ellipse at 60% 20%, rgba(59,7,100,0.58) 0%, rgba(24,26,42,0) 80%)',
           }}
         />
         <nav
           className={`fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-30 select-none transition-transform duration-300 ease-out ${
-            hideNav ? "-translate-y-full" : "translate-y-0"
+            hideNav ? '-translate-y-full' : 'translate-y-0'
           }`}
-          style={{ background: "transparent" }}
+          style={{ background: 'transparent' }}
         >
           <Logo />
           {isAuthed ? (
@@ -118,7 +123,7 @@ export default function Home() {
             <div className="space-y-6">
               <h1
                 className="text-5xl font-bold leading-tight text-white drop-shadow-lg"
-                style={{ textShadow: "0 0 16px #fff, 0 0 32px #1a237e" }}
+                style={{ textShadow: '0 0 16px #fff, 0 0 32px #1a237e' }}
               >
                 Welcome to
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-cyan-300 to-pink-300">
@@ -127,18 +132,19 @@ export default function Home() {
               </h1>
               <p
                 className="text-lg text-white/90 max-w-xl"
-                style={{ textShadow: "0 0 8px #000" }}
+                style={{ textShadow: '0 0 8px #000' }}
               >
                 Embark on a cosmic journey to master math skills through playful
                 exploration, adaptive feedback, and AI powered guidance.
               </p>
               <div className="flex gap-4 flex-wrap">
-                <Link href={isAuthed ? "/ai-math" : "/auth?next=/ai-math"}>
+                <Link href={isAuthed ? '/ai-math' : '/auth?next=/ai-math'}>
                   <button
                     className="px-7 py-3 rounded-full font-semibold shadow-lg text-white text-lg transition hover:scale-[1.03]"
                     style={{
-                      background: "linear-gradient(90deg,#536dfe 0%,#00e5ff 100%)",
-                      boxShadow: "0 0 16px #00e5ff,0 0 32px #536dfe",
+                      background:
+                        'linear-gradient(90deg,#536dfe 0%,#00e5ff 100%)',
+                      boxShadow: '0 0 16px #00e5ff,0 0 32px #536dfe',
                     }}
                     onClick={playClick}
                   >
@@ -150,8 +156,9 @@ export default function Home() {
                     <button
                       className="px-7 py-3 rounded-full font-semibold shadow-lg text-white text-lg transition hover:scale-[1.03]"
                       style={{
-                        background: "linear-gradient(90deg,#ec4899 0%,#8b5cf6 100%)",
-                        boxShadow: "0 0 16px #ec4899,0 0 32px #8b5cf6",
+                        background:
+                          'linear-gradient(90deg,#ec4899 0%,#8b5cf6 100%)',
+                        boxShadow: '0 0 16px #ec4899,0 0 32px #8b5cf6',
                       }}
                       onClick={playClick}
                     >
@@ -163,7 +170,10 @@ export default function Home() {
             </div>
             <div
               className="rounded-2xl p-8 backdrop-blur-md border border-white/15 shadow-2xl relative overflow-hidden"
-              style={{ background: "linear-gradient(135deg,rgba(30,41,79,0.65) 0%,rgba(10,12,28,0.65) 100%)" }}
+              style={{
+                background:
+                  'linear-gradient(135deg,rgba(30,41,79,0.65) 0%,rgba(10,12,28,0.65) 100%)',
+              }}
             >
               <div className="absolute -top-20 -right-32 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl" />
               <div className="absolute -bottom-16 -left-24 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl" />
@@ -171,7 +181,9 @@ export default function Home() {
                 Why Space Math?
               </h2>
               <ul className="space-y-3 text-sm text-indigo-50/90">
-                <li>• Engaging space-themed interactions reinforce concepts.</li>
+                <li>
+                  • Engaging space-themed interactions reinforce concepts.
+                </li>
                 <li>• AI adapts to the learner&apos;s pace and style.</li>
                 <li>• Track progress with performance insights.</li>
                 <li>• Voice + AI help for early learners.</li>
@@ -188,41 +200,61 @@ export default function Home() {
               <Link href="/ai-math" className="group" onClick={playClick}>
                 <div className="relative h-full rounded-2xl p-6 flex flex-col gap-4 border border-white/15 bg-white/5 backdrop-blur-md shadow-xl transition group-hover:border-cyan-300/60 group-hover:shadow-cyan-400/30">
                   <div className="text-4xl">🧠</div>
-                  <h4 className="text-xl font-semibold text-cyan-200">AI Math Game</h4>
+                  <h4 className="text-xl font-semibold text-cyan-200">
+                    AI Math Game
+                  </h4>
                   <p className="text-sm text-indigo-50/80 flex-1">
-                    Interactive, adaptive space gameplay that turns operations into missions.
+                    Interactive, adaptive space gameplay that turns operations
+                    into missions.
                   </p>
-                  <span className="text-cyan-300 text-sm font-medium group-hover:underline">Play →</span>
+                  <span className="text-cyan-300 text-sm font-medium group-hover:underline">
+                    Play →
+                  </span>
                 </div>
               </Link>
               <Link href="/math" className="group" onClick={playClick}>
                 <div className="relative h-full rounded-2xl p-6 flex flex-col gap-4 border border-white/15 bg-white/5 backdrop-blur-md shadow-xl transition group-hover:border-pink-300/60 group-hover:shadow-pink-400/30">
                   <div className="text-4xl">✏️</div>
-                  <h4 className="text-xl font-semibold text-pink-200">Math Quiz</h4>
+                  <h4 className="text-xl font-semibold text-pink-200">
+                    Math Quiz
+                  </h4>
                   <p className="text-sm text-indigo-50/80 flex-1">
-                    Quick practice quizzes to sharpen accuracy and speed on core skills.
+                    Quick practice quizzes to sharpen accuracy and speed on core
+                    skills.
                   </p>
-                  <span className="text-pink-300 text-sm font-medium group-hover:underline">Start →</span>
+                  <span className="text-pink-300 text-sm font-medium group-hover:underline">
+                    Start →
+                  </span>
                 </div>
               </Link>
               <Link href="/learning-path" className="group" onClick={playClick}>
                 <div className="relative h-full rounded-2xl p-6 flex flex-col gap-4 border border-white/15 bg-white/5 backdrop-blur-md shadow-xl transition group-hover:border-lime-300/60 group-hover:shadow-lime-400/30">
                   <div className="text-4xl">🛰️</div>
-                  <h4 className="text-xl font-semibold text-lime-200">Learning Path</h4>
+                  <h4 className="text-xl font-semibold text-lime-200">
+                    Learning Path
+                  </h4>
                   <p className="text-sm text-indigo-50/80 flex-1">
-                    Structured progression through topics with gradual difficulty ramp.
+                    Structured progression through topics with gradual
+                    difficulty ramp.
                   </p>
-                  <span className="text-lime-300 text-sm font-medium group-hover:underline">Go →</span>
+                  <span className="text-lime-300 text-sm font-medium group-hover:underline">
+                    Go →
+                  </span>
                 </div>
               </Link>
               <Link href="/learn-ai" className="group" onClick={playClick}>
                 <div className="relative h-full rounded-2xl p-6 flex flex-col gap-4 border border-white/15 bg-white/5 backdrop-blur-md shadow-xl transition group-hover:border-violet-300/60 group-hover:shadow-violet-400/30">
                   <div className="text-4xl">🤖</div>
-                  <h4 className="text-xl font-semibold text-violet-200">Learn AI</h4>
+                  <h4 className="text-xl font-semibold text-violet-200">
+                    Learn AI
+                  </h4>
                   <p className="text-sm text-indigo-50/80 flex-1">
-                    Streaming AI tutor explaining core math concepts with gentle guidance.
+                    Streaming AI tutor explaining core math concepts with gentle
+                    guidance.
                   </p>
-                  <span className="text-violet-300 text-sm font-medium group-hover:underline">Explore →</span>
+                  <span className="text-violet-300 text-sm font-medium group-hover:underline">
+                    Explore →
+                  </span>
                 </div>
               </Link>
             </div>
@@ -232,12 +264,12 @@ export default function Home() {
             <div className="rounded-2xl border border-white/15 bg-gradient-to-r from-indigo-600/30 to-cyan-500/30 backdrop-blur-md p-6 flex flex-col md:flex-row items-center gap-6 justify-between shadow-2xl">
               <div className="space-y-1 text-center md:text-left">
                 <h4 className="text-xl font-semibold text-white">
-                  {isAuthed ? "Jump back in" : "Ready to launch?"}
+                  {isAuthed ? 'Jump back in' : 'Ready to launch?'}
                 </h4>
                 <p className="text-sm text-indigo-50/80">
                   {isAuthed
-                    ? "Choose a mode and keep exploring the galaxy of numbers."
-                    : "Create your profile to track progress and unlock adaptive help."}
+                    ? 'Choose a mode and keep exploring the galaxy of numbers.'
+                    : 'Create your profile to track progress and unlock adaptive help.'}
                 </p>
               </div>
               <div className="flex gap-4 flex-wrap justify-center">

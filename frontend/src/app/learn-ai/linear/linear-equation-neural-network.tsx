@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import Link from "next/link";
+'use client';
+import React from 'react';
+import Link from 'next/link';
 
 export default function LinearEquationNeuralNetworkPage() {
   return (
@@ -24,14 +24,14 @@ export default function LinearEquationNeuralNetworkPage() {
           </h2>
           <p className="text-indigo-100/80 text-base max-w-2xl">
             A linear equation is a math rule that makes a straight line when you
-            draw it. It looks like{" "}
-            <span className="text-cyan-200 font-bold">y = mx + b</span>, where{" "}
+            draw it. It looks like{' '}
+            <span className="text-cyan-200 font-bold">y = mx + b</span>, where{' '}
             <span className="text-cyan-200">m</span> is the slope (how steep)
             and <span className="text-cyan-200">b</span> is where the line
             starts.
           </p>
           <div className="mt-4 text-[15px] text-cyan-100/90">
-            Try changing <span className="font-bold">m</span> and{" "}
+            Try changing <span className="font-bold">m</span> and{' '}
             <span className="font-bold">b</span> to see how the line moves!
           </div>
           {/* Simple interactive demo for line equation */}
@@ -46,7 +46,7 @@ export default function LinearEquationNeuralNetworkPage() {
           <p className="text-indigo-100/80 text-base max-w-2xl">
             Neural networks are smart computer programs that learn by stacking
             lots of linear equations and adding a twist called activation. Each
-            part (called a neuron) uses a rule like{" "}
+            part (called a neuron) uses a rule like{' '}
             <span className="text-cyan-200 font-bold">y = w·x + b</span> to make
             decisions.
           </p>
@@ -135,7 +135,7 @@ function LinearEquationDemo() {
           <span className="text-cyan-100">{b.toFixed(2)}</span>
         </label>
         <div className="mt-2 text-[15px] text-cyan-300 font-bold">
-          Equation:{" "}
+          Equation:{' '}
           <span className="text-cyan-100">
             y = {m.toFixed(2)}x + {b.toFixed(2)}
           </span>

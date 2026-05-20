@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import Link from "next/link";
+'use client';
+import React from 'react';
+import Link from 'next/link';
 
 interface LogoProps {
   className?: string;
@@ -9,7 +9,7 @@ interface LogoProps {
 }
 
 export function Logo({
-  className = "",
+  className = '',
   clickable = true,
   size = 40,
 }: LogoProps) {
@@ -66,7 +66,7 @@ export function Logo({
         className="font-extrabold tracking-tight text-lg md:text-2xl bg-gradient-to-r from-cyan-200 via-indigo-200 to-pink-200 bg-clip-text text-transparent"
         style={{
           textShadow:
-            "0 0 14px rgba(165,243,252,0.35),0 0 30px rgba(99,102,241,0.25)",
+            '0 0 14px rgba(165,243,252,0.35),0 0 30px rgba(99,102,241,0.25)',
         }}
       >
         Space<span className="ml-[2px]">Math</span>
