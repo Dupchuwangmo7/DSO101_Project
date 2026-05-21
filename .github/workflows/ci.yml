@@ -14,10 +14,11 @@ env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ${{ github.repository_owner }}/aimath
 
-# ─────────────────────────────────────────────────────
-# Job 1: Backend — lint, typecheck, unit + e2e tests
-# ─────────────────────────────────────────────────────
 jobs:
+
+  # ─────────────────────────────────────────────────────
+  # Job 1: Backend — lint, typecheck, unit + e2e tests
+  # ─────────────────────────────────────────────────────
   backend-ci:
     name: "Backend — Test & Build"
     runs-on: ubuntu-latest
@@ -41,14 +42,14 @@ jobs:
           --health-retries 5
 
     env:
-      DB_HOST:      localhost
-      DB_PORT:      5432
-      DB_USERNAME:  postgres
-      DB_PASSWORD:  postgres
-      DB_DATABASE:  education_math_test
-      JWT_SECRET:   ci_test_secret_not_for_prod
+      DB_HOST:       localhost
+      DB_PORT:       5432
+      DB_USERNAME:   postgres
+      DB_PASSWORD:   postgres
+      DB_DATABASE:   education_math_test
+      JWT_SECRET:    ci_test_secret_not_for_prod
       COOKIE_SECRET: ci_cookie_secret
-      NODE_ENV:     test
+      NODE_ENV:      test
 
     steps:
       - name: Checkout
@@ -125,7 +126,7 @@ jobs:
           NEXT_PUBLIC_BACKEND_URL: http://localhost:3001
 
   # ─────────────────────────────────────────────────────
-  # Job 3: Security scanning — SonarCloud + CodeQL + npm audit
+  # Job 3: Security scanning
   # ─────────────────────────────────────────────────────
   security-scan:
     name: "Security — SAST & Dependency Audit"
@@ -292,7 +293,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: production
-      url: ${{ secrets.RENDER_FRONTEND_URL }}
+      url: https://dso101-project-frontend.onrender.com
 
     steps:
       - name: Trigger backend deploy on Render
