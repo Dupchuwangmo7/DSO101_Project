@@ -1,12 +1,12 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^@xenova/transformers$": "<rootDir>/../src/__mocks__/@xenova/transformers.js"
+    "^@xenova/transformers$": "<rootDir>/src/__mocks__/@xenova/transformers.js"
   }
 }
