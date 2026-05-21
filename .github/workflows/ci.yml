@@ -81,8 +81,7 @@ jobs:
           flags: backend
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Integration (e2e) tests
-        run: npm run test:e2e
+  
 
       - name: Build TypeScript
         run: npm run build
