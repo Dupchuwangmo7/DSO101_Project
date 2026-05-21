@@ -88,6 +88,9 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^@xenova/transformers$": "<rootDir>/__mocks__/@xenova/transformers.js"
-    }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@xenova/transformers)"
+    ]
   }
 }
